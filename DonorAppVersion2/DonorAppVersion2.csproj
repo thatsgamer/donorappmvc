@@ -200,6 +200,7 @@
     <Compile Include="Models\DonorAilmentDetail.cs">
       <DependentUpon>AllDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DonorAndDonorCycleViewModel.cs" />
     <Compile Include="Models\DonorCycle.cs">
       <DependentUpon>AllDataModel.tt</DependentUpon>
     </Compile>
@@ -321,6 +322,7 @@
     <Content Include="Views\Parent\ParentProfile.cshtml" />
     <Content Include="Views\Shared\_partnerLayout.cshtml" />
     <Content Include="Views\Partner\Login.cshtml" />
+    <Content Include="Views\Parent\AddClinic.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

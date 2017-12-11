@@ -39,7 +39,7 @@ namespace DonorAppVersion2.Controllers
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
             
-                using (sampleEntities dbModel = new sampleEntities())
+                 using (sampleEntities dbModel = new sampleEntities())
                 {
                     try
                     {
@@ -70,8 +70,7 @@ namespace DonorAppVersion2.Controllers
                         ViewBag.ErrorMessage = ex.Message;
                         return View();
                     }
-                }            
-
+                }
         }
         
         ////////////////////////////////////////////////////////////////// Parent Registrations
@@ -203,30 +202,53 @@ namespace DonorAppVersion2.Controllers
         public ActionResult Verification(Parent parent)
         {
             var errors = ModelState.Values.SelectMany(v => v.Errors);
-            using (sampleEntities dbModel = new sampleEntities())
+
+            if (ModelState.IsValid)
             {
-                    
-                var success = dbModel.Parents.Where(p => p.EmailVerificationCode == parent.EmailVerificationCode && p.ContactVerificationCode == parent.ContactVerificationCode).FirstOrDefault();
-                if (success != null)
+                using (sampleEntities dbModel = new sampleEntities())
                 {
-                    Parent updateParent = (from p in dbModel.Parents
-                                            where p.ParentId == parent.ParentId
-                                            select p).FirstOrDefault();
+                    var success = dbModel.Parents.Where(p => p.EmailVerificationCode == parent.EmailVerificationCode && p.ContactVerificationCode == parent.ContactVerificationCode).FirstOrDefault();
+                    try
+                    {
+                        if (success != null)
+                        {
+                            Parent updateParent = (from p in dbModel.Parents
+                                                   where p.ParentId == parent.ParentId
+                                                   select p).FirstOrDefault();
 
-                    updateParent.isContactVerified = true;
-                    updateParent.isEmailVerified = true;
-                    updateParent.Note = "Contact Information Verified, Waiting for Payment";
-                    dbModel.SaveChanges();
+                            updateParent.isContactVerified = true;
+                            updateParent.isEmailVerified = true;
 
-                    ViewBag.SuccessMessage = "Validation Complete";
+                            updateParent.Note = "Contact Information Verified, Waiting for Payment";
+                            dbModel.SaveChanges();
 
-                    return RedirectToAction("Dashboard");
+                            ViewBag.SuccessMessage = "Validation Complete";
+
+                            return RedirectToAction("Dashboard");
+                        }
+                        else
+                        {
+                            ViewBag.ErrorMessage = "OTP Entered are Invalid, Please verify and try again!";
+                            return View();
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        ViewBag.ErrorMessage = ex.Message;
+                        return View();
+                    }
                 }
-                else
+            }
+            else
+            {
+                int i = 0;
+                foreach (ModelError error in errors)
                 {
-                    ViewBag.ErrorMessage = "OTP Entered are Invalid, Please verify and try again!";
-                    return View();
+                    i = i + 1;
+                    ViewBag.WarningMessage += i.ToString() + ") " + error.ErrorMessage.ToString() + ". ";
                 }
+
+                return View(parent);
             }
         }
 
@@ -449,8 +471,41 @@ namespace DonorAppVersion2.Controllers
             }
         }
         
+        ////////////////////////////////////////////////////////////////// Add Clinic of Agency
+
+        public ActionResult AddClinic()
+        {
+            if (Session["ParentId"] != null)
+            {
+                using(sampleEntities dbModel = new sampleEntities())
+                {
+                List<Partner> PartnerList = dbModel.Partners.ToList();
+                    ViewBag.PartnerList = new SelectList(PartnerList, "PartnerId", "Name");
+
+                return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+        [HttpPost]
+        public ActionResult AddClinic(ParentsRegisteredWithPartner prwp)
+        {
+            if (Session["ParentId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+
+        }
+
+
         ////////////////////////////////////////////////////////////////// JSON OUTPUT
-        
         [HttpPost]
         public JsonResult GetDonorsList(string Prefix)
         {

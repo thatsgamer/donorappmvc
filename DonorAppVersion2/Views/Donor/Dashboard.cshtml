@@ -1,20 +1,17 @@
-﻿@model DonorAppVersion2.Models.Donor
-
+﻿@model DonorAppVersion2.Models.DonorAndDonorCycleViewModel
 @{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_donorLayout.cshtml";
 }
-
 <h2>Donor Dashboard</h2>
-
 
 @{
 
     var contactverify_classname = "";
     var accountstatus = "";
     var class_verifycontactlink = "";
-    
-    if (Model.isContactVerified == true)
+
+    if (Model.Donor.isContactVerified == true)
     {
         contactverify_classname = "accountStatusActive";
         accountstatus = "Contacts Verified!";
@@ -27,29 +24,78 @@
         class_verifycontactlink = null;
     }
 
+    var donorCycle = Model.DonorCycle;
+    var donorcycleid = 0;
 
+    if (donorCycle != null)
+    {
+        donorcycleid = donorCycle.Count();
+    }
 
 
 }
-
 <div class="row">
     <div class="col-md-9">
         <div style="background-color:#ff6a00; color:#fff; padding:10px; font-size:large">
-            Your Unique Donor21 Donor Id : <strong> @Model.DonorId</strong>
-        </div>
-        <br />
+            Your Unique Donor21 Donor Id : <strong> @Model.Donor.DonorId</strong>
+
+
+        </div><hr />
+        <h4>Your Donor Cycle Involvment</h4>
+        <table class="table table-striped" style="font-size:xx-small;">
+
+            @if (donorcycleid > 0)
+            {
+                <tr>
+
+                    <th>Parent Id</th>
+                    <th>Month and Year of Retrival</th>
+                    <th>Fertility Attorny</th>
+                    <th>Donors Eye Color</th>
+                    <th>Donors Height</th>
+                    <th>Donors Age</th>
+                    <th>Action</th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        <text> You dont have any active donor cycles added yet </text>
+                    </td>
+                </tr>
+            }
+
+            @foreach (DonorAppVersion2.Models.DonorCycle cycle in donorCycle)
+            {
+                <tr>
+                    <td>@cycle.ParentId</td>
+                    <td>@cycle.MonthAndYearOfRetrieval</td>
+                    <td>@cycle.FertilityAttorny</td>
+                    <td>@cycle.DonorEyeColor</td>
+                    <td>@cycle.DonorHeight</td>
+                    <td>@cycle.DonorAge</td>
+                    <td><a href="#">Approve</a> | <a href="#">Reject</a></td>
+                </tr>
+            }
+
+
+        </table>
+
     </div>
     <div class="col-md-3">
         <div style="padding:20px; background-color:#282828; color:#fff">
             <h4>Account Status</h4><hr />
             <h3 class="@contactverify_classname">@accountstatus</h3>
-            
+
             <a href="~/Donor/Verification/@Session["DonorId"].ToString()" class="@class_verifycontactlink">Verify your Contact Details Now!!</a>
             <br />
             <span style="font-size:xx-small;" class="@class_verifycontactlink">You must verify your contact details first to start using your portal</span>
 
-
         </div>
-
     </div>
 </div>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>

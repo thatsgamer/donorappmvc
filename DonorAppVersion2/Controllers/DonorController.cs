@@ -201,9 +201,17 @@ namespace DonorAppVersion2.Controllers
                 using (sampleEntities dbModel = new sampleEntities())
                 {
                     var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
+                    var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
+
+                    var viewModel = new DonorAndDonorCycleViewModel
+                    {
+                        Donor = donor,
+                        DonorCycle = donorcycles
+                    };
+
                     if (donor != null)
                     {
-                        return View(donor);                
+                        return View(viewModel);                
                     }
                     else
                     {

@@ -31,64 +31,71 @@ namespace DonorAppVersion2.Models
         }
     
         public int ParentId { get; set; }
+
         public string Salutation { get; set; }
 
-        
-        [Display(Name= "First Name")]
+        //[Required(ErrorMessage = "Please Enter First Namer")]
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
-        
-        
+
+        //[Required(ErrorMessage = "Please Enter Last Namer")]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        
+        //[Required(ErrorMessage = "Please Enter Contact Number")]
         [Display(Name = "Contact Number")]
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Contact Number")]
         public string ContactNumber { get; set; }
 
-        //[Required(ErrorMessage="Plese Enter OTP recieved on Phone")]
+        [Display(Name = "OTP from mobile")]
         public string ContactVerificationCode { get; set; }
+
         public bool isContactVerified { get; set; }
 
-
-        
-        
-        [DataType(DataType.EmailAddress)]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [DataType(DataType.EmailAddress, ErrorMessage = "Invalid Email Number")]
         public string Email { get; set; }
 
-        //[Required(ErrorMessage="Plese Enter OTP recieved on Email")]
+        [Display(Name = "OTP from Email")]
         public string EmailVerificationCode { get; set; }
+
         public bool isEmailVerified { get; set; }
 
-        
         [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date, ErrorMessage = "Invalid Date!")]
         public string DateOfBirth { get; set; }
 
-        
+        //[Required(ErrorMessage = "Please Enter Address")]
         public string Address { get; set; }
-        
+
+        //[Required(ErrorMessage = "Please Enter City")]
         public string City { get; set; }
-        
+
+        //[Required(ErrorMessage = "Please Enter State")]
         public string State { get; set; }
 
-        [DataType(DataType.PostalCode)]        
+        //[Required(ErrorMessage = "Please Enter Zip/Pincode")]
+        [DataType(DataType.PostalCode, ErrorMessage = "Invalid Zip Code")]
         public string Zip { get; set; }
         public System.DateTime CreatinDate { get; set; }
 
-        
+        //[Required(ErrorMessage = "Please Enter Password")]
         [DataType(DataType.Password)]
         [StringLength(20, ErrorMessage = "The {0} must be - {2} characters long & should contain Capital letter, Numbers & Symbol", MinimumLength = 8)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]        
+        //[Required(ErrorMessage = "Please Enter Confirm Password")]
+        //[Compare("Password", ErrorMessage = "Password & Confirm Password does not match!")]
+        [DataType(DataType.Password)]
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
 
-
         public string Salt { get; set; }
+        
         public bool isPaid { get; set; }
+        
         public bool Status { get; set; }
+        
         public string Note { get; set; }
     
         public virtual ICollection<DonorCycle> DonorCycles { get; set; }

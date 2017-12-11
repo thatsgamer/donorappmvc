@@ -57,6 +57,7 @@ namespace DonorAppVersion2.Models
         public bool isEmailVerified { get; set; }
 
         [Display(Name = "Date of Birth")]
+        [DataType(DataType.Date, ErrorMessage = "Invalid Date!")]
         public string DateOfBirth { get; set; }
 
         [Display(Name = "Eye Color")]

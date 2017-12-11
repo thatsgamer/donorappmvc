@@ -25,5 +25,9 @@ namespace DonorAppVersion2.Models
         public virtual Parent Parent { get; set; }
         public virtual PartnerAndTheirContact PartnerAndTheirContact { get; set; }
         public virtual Partner Partner { get; set; }
+
+
+
+       
     }
 }
