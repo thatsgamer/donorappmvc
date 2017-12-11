@@ -1,0 +1,106 @@
+﻿@model DonorAppVersion2.Models.ParentAndDonorCyclesViewModel
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<h2>Parent Dashboard</h2>
+
+@{
+    
+    var AccountStatus="";
+    var note = Model.Parent.Note;
+    var payment_classname = "";
+    var account_classname = "";
+    if(Model.Parent.Status == true)
+    {
+        AccountStatus = "Active";
+        payment_classname = "hiddencontent";
+        account_classname = "accountStatusActive";
+    }
+    else
+    {
+        AccountStatus = "Inactive";
+        payment_classname = null;
+        account_classname = "accountStatusInactive";
+    }
+
+
+    var donorCycle = Model.DonorCycle;
+    var donorcycleid = 0;
+    
+    if(donorCycle != null)
+    {
+        donorcycleid = donorCycle.Count();
+    }
+    
+    
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <div style="background-color:#014476; color:#fff; padding:10px; font-size:large">
+            Your Unique Donor21 Parent Id : <strong> @Model.Parent.ParentId</strong>
+        </div><hr />
+        <h4>Active Donor Cycles</h4>
+        <table class="table table-striped" style="font-size:xx-small;">
+
+                @if (donorcycleid > 0)
+                {
+                    <tr>
+
+                        <th>Donor Id</th>
+                        <th>Month and Year of Retrival</th>
+                        <th>Fertility Attorny</th>
+                        <th>Donors Eye Color</th>
+                        <th>Donors Height</th>
+                        <th>Donors Age</th>
+                        <th>Action</th>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            <text> You dont have any active donor cycles added yet </text>
+                        </td>
+                    </tr>
+                }
+
+                    @foreach (DonorAppVersion2.Models.DonorCycle cycle in donorCycle)
+                    {
+                        <tr>
+                            <td>@cycle.DonorId</td>
+                            <td>@cycle.MonthAndYearOfRetrieval</td>
+                            <td>@cycle.FertilityAttorny</td>
+                            <td>@cycle.DonorEyeColor</td>
+                            <td>@cycle.DonorHeight</td>
+                            <td>@cycle.DonorAge</td>
+                            <td><a href="#">View Update</a></td>
+                        </tr>
+                    }
+
+                
+        </table>
+
+        <a href="~/Parent/AddDonorCycle" class="btn btn-primary">Add Donor Cycle</a>
+        <hr />
+        Payment Summury
+
+
+    </div>
+
+    <div class="col-md-3">
+        <div style="padding:20px; background-color:#282828; color:#fff">
+            <h4>Account Status</h4><hr />
+            <h1 class="@account_classname">@AccountStatus</h1>
+            <small>@note</small><br /><br />
+            <a href="~/Parent/RegistrationFees" class="@payment_classname">Complete Payment Now!</a>
+            <br />
+            <span style="font-size:xx-small;" class="@payment_classname">You wont be able to add Donor Cycles, Request Match Details or Fill up your other details until you complete the payment</span>
+
+
+        </div>
+    </div>
+</div>

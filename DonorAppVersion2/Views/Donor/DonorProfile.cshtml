@@ -1,0 +1,65 @@
+﻿@model DonorAppVersion2.Models.Donor
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_donorLayout.cshtml";
+}
+
+<h2>Donor Profile</h2>
+
+
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-5">
+            <div style="border:1px solid black; padding:20px; background-color:#000000; color:#fff; text-align:center">
+                <img src="~/Files/@Html.DisplayFor(model => model.Photo)" width="200px" />
+                <h3>@Html.DisplayFor(model => model.Salutation) @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName)</h3>
+            </div>
+            <br /><br />
+            <p style="text-align:center">
+                @Html.ActionLink("Edit Profile", "EditDonorProfile", new { id = Model.DonorId })
+            </p>
+        </div>
+        <div class="col-md-7">
+            <div style="border:1px solid #ccc; padding:20px; background-color:#fff; color:#000; font-size:small">
+
+
+                <div class="row">
+                    <div class="col-md-4">Contact @Html.DisplayFor(model => model.isContactVerified)</div>
+                    <div class="col-md-8">@Html.DisplayFor(model => model.ContactNumber)</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">Email @Html.DisplayFor(model => model.isEmailVerified)</div>
+                    <div class="col-md-8">@Html.DisplayFor(model => model.Email)</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">Date of Birth</div>
+                    <div class="col-md-8">@Html.DisplayFor(model => model.DateOfBirth)</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">Eye Color</div>
+                    <div class="col-md-8">@Html.DisplayFor(model => model.EyeColor)</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">Height</div>
+                    <div class="col-md-8">@Html.DisplayFor(model => model.Height) cm</div>
+                </div>
+                <hr />
+                <div class="row">
+                    <div class="col-md-4">Race</div>
+                    <div class="col-md-8">@Html.DisplayFor(model => model.Race)</div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+</div><br /><br />
+

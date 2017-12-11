@@ -1,0 +1,57 @@
+﻿@model DonorAppVersion2.Models.Partner
+
+@{
+    ViewBag.Title = "Partner Login : Donor 21"; 
+}
+@using (Html.BeginForm("Login", "Partner", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <br /><br /><br /><br />
+    <div style="background-color:#c2f7e2; padding:35px; border-radius:10px">
+        <br /><br />
+        <div class="row">
+            <div class="col-md-6"><br /><br />
+                <center>
+                    <h2>Login for Partners</h2>
+                    <h4>Business Partners of Donor 21</h4>
+                </center>
+            </div>
+            <div class="col-md-6">
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <label class="label label-success">@ViewBag.SuccessMessage</label>
+                            <label class="label label-warning">@ViewBag.DuplicateMessage</label>
+                            <label class="label label-danger">@ViewBag.ErrorMessage</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.BusinessEmail, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.BusinessEmail, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                            @Html.ValidationMessageFor(model => model.BusinessEmail, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Login" class="btn btn-success btn-block" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br /><br />
+    </div>
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

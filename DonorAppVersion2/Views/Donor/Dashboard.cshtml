@@ -1,0 +1,55 @@
+﻿@model DonorAppVersion2.Models.Donor
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_donorLayout.cshtml";
+}
+
+<h2>Donor Dashboard</h2>
+
+
+@{
+
+    var contactverify_classname = "";
+    var accountstatus = "";
+    var class_verifycontactlink = "";
+    
+    if (Model.isContactVerified == true)
+    {
+        contactverify_classname = "accountStatusActive";
+        accountstatus = "Contacts Verified!";
+        class_verifycontactlink = "hiddencontent";
+    }
+    else
+    {
+        contactverify_classname = "accountStatusInactive";
+        accountstatus = "Contacts Not Verified!";
+        class_verifycontactlink = null;
+    }
+
+
+
+
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <div style="background-color:#ff6a00; color:#fff; padding:10px; font-size:large">
+            Your Unique Donor21 Donor Id : <strong> @Model.DonorId</strong>
+        </div>
+        <br />
+    </div>
+    <div class="col-md-3">
+        <div style="padding:20px; background-color:#282828; color:#fff">
+            <h4>Account Status</h4><hr />
+            <h3 class="@contactverify_classname">@accountstatus</h3>
+            
+            <a href="~/Donor/Verification/@Session["DonorId"].ToString()" class="@class_verifycontactlink">Verify your Contact Details Now!!</a>
+            <br />
+            <span style="font-size:xx-small;" class="@class_verifycontactlink">You must verify your contact details first to start using your portal</span>
+
+
+        </div>
+
+    </div>
+</div>
