@@ -12,6 +12,37 @@
 {
     @Html.AntiForgeryToken()
 
+    <script type="text/javascript">
+    $(function () {
+        $("#tb_donorid").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '/Parent/GetDonorsList/',
+                    data: "{ 'prefix': '" + request.term + "'}",
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return item;
+                        }))
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            select: function (e, i) {
+                $("#hfDonor").val(i.item.val);
+            },
+            minLength: 1
+        });
+    });
+    </script>
+
     <div class="row">
         <div class="col-md-8">
             <h2>Add Donor Cycle</h2>
@@ -30,13 +61,14 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.DonorId, "DonorId", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
-                        @Html.EditorFor(model => model.DonorId, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                        @Html.EditorFor(model => model.DonorId, new { htmlAttributes = new { @class = "form-control", @required = "required", @id = "tb_donorid" } })
                         @Html.ValidationMessageFor(model => model.DonorId, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <input type="hidden" id="hfDonor" name="hfDonorId" />
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.MonthAndYearOfRetrieval, htmlAttributes: new { @class = "control-label col-md-4" })
+                    @Html.LabelFor(model => model.MonthAndYearOfRetrieval, "Month & Year of Retrieval", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.MonthAndYearOfRetrieval, new { htmlAttributes = new { @class = "form-control" }, @required = "required", @placeholder = "MM/yyyy" })
                         @Html.ValidationMessageFor(model => model.MonthAndYearOfRetrieval, "", new { @class = "text-danger" })
@@ -44,7 +76,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.FertilityAttorny, htmlAttributes: new { @class = "control-label col-md-4" })
+                    @Html.LabelFor(model => model.FertilityAttorny, "Fertility Attorny", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.FertilityAttorny, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                         @Html.ValidationMessageFor(model => model.FertilityAttorny, "", new { @class = "text-danger" })
@@ -52,7 +84,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DonorEyeColor, htmlAttributes: new { @class = "control-label col-md-4" })
+                    @Html.LabelFor(model => model.DonorEyeColor, "Donor Eye Color", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.DonorEyeColor, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                         @Html.ValidationMessageFor(model => model.DonorEyeColor, "", new { @class = "text-danger" })
@@ -60,7 +92,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DonorHeight, htmlAttributes: new { @class = "control-label col-md-4" })
+                    @Html.LabelFor(model => model.DonorHeight, "Donor Heigth (cm)", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.DonorHeight, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                         @Html.ValidationMessageFor(model => model.DonorHeight, "", new { @class = "text-danger" })
@@ -68,7 +100,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.DonorAge, htmlAttributes: new { @class = "control-label col-md-4" })
+                    @Html.LabelFor(model => model.DonorAge, "Donor Age", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @Html.EditorFor(model => model.DonorAge, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                         @Html.ValidationMessageFor(model => model.DonorAge, "", new { @class = "text-danger" })
@@ -103,18 +135,20 @@
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+
 
 <script type="text/javascript">
-    $(function () {
-        $("#DonorId").autocomplete({
-            source: "/Parent/GetDonorsList",
-            minLength: 1,
-            select: function (event, ui) {
-                if (ui.item) {
-                    $("#DonorId").val(ui.item.value);
-                    $("form").submit();
-                }
-            }
+    $(document).ready(function () {
+        $('#MonthAndYearOfRetrieval').datepicker({
+            dateFormat: "MM/yyyy",
+            showStatus: true,
+            showWeeks: true,
+            currentText: 'Now',
+            autoSize: true,
+            gotoCurrent: true,
+            showAnim: 'blind',
+            highlightWeek: true
         });
     });
 </script>

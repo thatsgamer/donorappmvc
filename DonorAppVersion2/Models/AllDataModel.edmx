@@ -242,7 +242,7 @@
           <Property Name="ParentId" Type="int" Nullable="false" />
           <Property Name="PartnerContactsId" Type="int" Nullable="false" />
           <Property Name="isApproved" Type="bit" Nullable="false" />
-          <Property Name="DateOfApproval" Type="bit" />
+          <Property Name="DateOfApproval" Type="datetime" />
           <Property Name="Status" Type="nvarchar(max)" />
           <Property Name="ParentIdOnPartnersSystem" Type="nvarchar" MaxLength="50" />
         </EntityType>
@@ -703,7 +703,6 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
-        <Function Name="GetAllDonors" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
           <Parameter Name="owner_id" Type="int" Mode="In" />
@@ -1176,7 +1175,7 @@
           <Property Name="ParentId" Type="Int32" Nullable="false" />
           <Property Name="PartnerContactsId" Type="Int32" Nullable="false" />
           <Property Name="isApproved" Type="Boolean" Nullable="false" />
-          <Property Name="DateOfApproval" Type="Boolean" />
+          <Property Name="DateOfApproval" Type="DateTime" Precision="3" />
           <Property Name="Status" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ParentIdOnPartnersSystem" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Parent" Relationship="Self.FK_ParentsRegisteredWithPartners_Parents" FromRole="ParentsRegisteredWithPartners" ToRole="Parents" />
@@ -2220,30 +2219,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetAllDonors" FunctionName="AllDataModel.Store.GetAllDonors">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="AllDataModel.GetAllDonors_Result">
-                <ScalarProperty Name="DonorId" ColumnName="DonorId" />
-                <ScalarProperty Name="Salutation" ColumnName="Salutation" />
-                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
-                <ScalarProperty Name="LastName" ColumnName="LastName" />
-                <ScalarProperty Name="ContactNumber" ColumnName="ContactNumber" />
-                <ScalarProperty Name="ContactVerificationCode" ColumnName="ContactVerificationCode" />
-                <ScalarProperty Name="isContactVerified" ColumnName="isContactVerified" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="EmailVerificationCode" ColumnName="EmailVerificationCode" />
-                <ScalarProperty Name="isEmailVerified" ColumnName="isEmailVerified" />
-                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
-                <ScalarProperty Name="EyeColor" ColumnName="EyeColor" />
-                <ScalarProperty Name="Height" ColumnName="Height" />
-                <ScalarProperty Name="Race" ColumnName="Race" />
-                <ScalarProperty Name="Photo" ColumnName="Photo" />
-                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="Salt" ColumnName="Salt" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="AllDataModel.Store.sp_alterdiagram" />
           <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="AllDataModel.Store.sp_creatediagram" />
           <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="AllDataModel.Store.sp_dropdiagram" />

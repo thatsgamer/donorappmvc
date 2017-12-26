@@ -7,8 +7,6 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
-
-    }
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -33,19 +31,19 @@
                         <a href="~/Parent/ParentProfile">Profile</a>
                     </li>
                     <li>
-                        <a href="~/Parent/Settings">Settings</a>
+                        <a href="~/Parent/RequestMatch">Match Requests</a>
                     </li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="#"> Welcome @Session["ParentName"].ToString()</a>
-                        
-                    </li>
-                    <li>
-                        <a href="~/Parent/SessionTimeout">Logout</a>
-                    </li>
-                </ul>
+    <li>
+        <a href="#"> Welcome @Session["ParentName"].ToString() </a>
+
+                </li>
+                <li>
+                    <a href="~/Parent/SessionTimeout">Logout</a>
+                </li>
+            </ul>
             </div>
         </div>
     </div>

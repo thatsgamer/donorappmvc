@@ -77,13 +77,36 @@
                             <td>@cycle.DonorEyeColor</td>
                             <td>@cycle.DonorHeight</td>
                             <td>@cycle.DonorAge</td>
-                            <td><a href="#">View Update</a></td>
+                            <td>
+                                @{
+                                    if (cycle.isApprovedByDonor == true || cycle.isApprovedByClinic == true || cycle.isApprovedByAgency == true)
+                                    {
+                                        <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
+                                        <a href="~/Parent/RemoveDonorCycle/@cycle.DonorCycleId" class="label label-danger" style="text-decoration:none">Remove</a>
+                                    }
+}
+
+
+                            </td>
+
+
+
                         </tr>
                     }
 
                 
         </table>
-
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="label label-danger">@ViewBag.ErrorMessage</label>
+                <label class="label label-warning">@ViewBag.WarningMessage</label>
+                <label class="label label-success">@ViewBag.SuccessMessage</label>
+            </div>
+        </div>
         <a href="~/Parent/AddDonorCycle" class="btn btn-primary">Add Donor Cycle</a>
         <hr />
         Payment Summury
@@ -96,7 +119,7 @@
             <h4>Account Status</h4><hr />
             <h1 class="@account_classname">@AccountStatus</h1>
             <small>@note</small><br /><br />
-            <a href="~/Parent/RegistrationFees" class="@payment_classname">Complete Payment Now!</a>
+            <a href="~/Parent/PayRegistrationFees" class="@payment_classname">Complete Payment Now!</a>
             <br />
             <span style="font-size:xx-small;" class="@payment_classname">You wont be able to add Donor Cycles, Request Match Details or Fill up your other details until you complete the payment</span>
 

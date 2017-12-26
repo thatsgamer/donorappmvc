@@ -14,13 +14,13 @@
     if (Model.Donor.isContactVerified == true)
     {
         contactverify_classname = "accountStatusActive";
-        accountstatus = "Contacts Verified!";
+        accountstatus = "Verified";
         class_verifycontactlink = "hiddencontent";
     }
     else
     {
         contactverify_classname = "accountStatusInactive";
-        accountstatus = "Contacts Not Verified!";
+        accountstatus = "Verification Pending";
         class_verifycontactlink = null;
     }
 
@@ -47,7 +47,6 @@
             @if (donorcycleid > 0)
             {
                 <tr>
-
                     <th>Parent Id</th>
                     <th>Month and Year of Retrival</th>
                     <th>Fertility Attorny</th>
@@ -75,24 +74,49 @@
                     <td>@cycle.DonorEyeColor</td>
                     <td>@cycle.DonorHeight</td>
                     <td>@cycle.DonorAge</td>
-                    <td><a href="#">Approve</a> | <a href="#">Reject</a></td>
+                    <td>
+                        @{
+                            if (cycle.isApprovedByDonor == false)
+                            {
+                                <a href="~/Donor/ApproveDonorCycle/@cycle.DonorCycleId" style="text-decoration:none" class="label label-success">Approve</a><a href="~/Donor/RejectDonorCycle/@cycle.DonorCycleId" class="label label-danger" style="text-decoration:none">Reject</a>
+                            }
+                            else
+                            {
+                                <a href="~/Donor/SubmitUpdate" class="label label-primary" style="text-decoration:none">Submit Update</a>
+                            }
+}
+
+                    </td>
+
+
+
                 </tr>
             }
 
 
         </table>
-
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label class="label label-success">@ViewBag.SuccessMessage</label>
+                <label class="label label-warning">@ViewBag.WarningMessage</label>
+                <label class="label label-danger">@ViewBag.ErrorMessage</label>
+            </div>
+        </div>
     </div>
     <div class="col-md-3">
-        <div style="padding:20px; background-color:#282828; color:#fff">
-            <h4>Account Status</h4><hr />
-            <h3 class="@contactverify_classname">@accountstatus</h3>
+        @if (accountstatus != "Verified")
+        {        
+            <div style="padding:20px; background-color:#282828; color:#fff">
+                <h4>Account Status</h4><hr />
+                <h3 class="@contactverify_classname">@accountstatus</h3>
 
-            <a href="~/Donor/Verification/@Session["DonorId"].ToString()" class="@class_verifycontactlink">Verify your Contact Details Now!!</a>
-            <br />
-            <span style="font-size:xx-small;" class="@class_verifycontactlink">You must verify your contact details first to start using your portal</span>
+                <a href="~/Donor/Verification/@Session["DonorId"].ToString()" class="@class_verifycontactlink">Verify your Contact Details Now!!</a>
+                <br />
+                <span style="font-size:xx-small;" class="@class_verifycontactlink">You must verify your contact details first to start using your portal</span>
 
-        </div>
+            </div>   
+        }
+        
     </div>
 </div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
