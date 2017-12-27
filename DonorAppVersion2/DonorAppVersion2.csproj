@@ -233,6 +233,7 @@
     <Compile Include="Models\DonorsRegisteredWithPartner.cs">
       <DependentUpon>AllDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\DonorVerificationViewModel.cs" />
     <Compile Include="Models\FamilyDiseaseQuestion.cs">
       <DependentUpon>AllDataModel.tt</DependentUpon>
     </Compile>

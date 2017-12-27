@@ -1,12 +1,9 @@
-﻿@model DonorAppVersion2.Models.Donor
-
+﻿@model DonorAppVersion2.Models.DonorVerificationViewModel
 @{
     ViewBag.Title = "Please verify your details";
 }
 
-
 <h2>Step 2 : Verification</h2>
-
 
 @using (Html.BeginForm("Verification", "Donor", FormMethod.Post))
 {
@@ -18,16 +15,15 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.DonorId)
 
-
         <span class="custom-warning-message"> We have sent a 6 digit OTP on both your contact details, please check if you have received the OTP and enter them below.</span>
         <br /><br /><br />
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <label class="label label-danger">@ViewBag.ErrorMessage</label>
+                <label class="label label-danger">@ViewBag.WarningMessage</label>
                 <label class="label label-success">@ViewBag.SuccessMessage</label>
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.ContactNumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -35,7 +31,6 @@
                 @Html.ValidationMessageFor(model => model.ContactNumber, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.ContactVerificationCode, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -43,7 +38,6 @@
                 @Html.ValidationMessageFor(model => model.ContactVerificationCode, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -51,7 +45,6 @@
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.EmailVerificationCode, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -59,7 +52,6 @@
                 @Html.ValidationMessageFor(model => model.EmailVerificationCode, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Verify My Details" class="btn btn-danger btn-block" />
@@ -67,7 +59,6 @@
         </div>
     </div>
 }
-
 
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>

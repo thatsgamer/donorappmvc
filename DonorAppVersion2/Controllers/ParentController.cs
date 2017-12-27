@@ -209,12 +209,30 @@ namespace DonorAppVersion2.Controllers
                 {
                     if (success != null)
                     {
-                        parent.isContactVerified = true;
-                        parent.isEmailVerified = true;
-                        parent.Note = "Contact Information Verified, Waiting for Payment";
-                        dbModel.SaveChanges();                         
-                        ViewBag.SuccessMessage = "Validation Complete";
-                        return RedirectToAction("Dashboard");
+                        try
+                        {
+                            var updateparent = dbModel.Parents.Where(pid => pid.ParentId == success.ParentId).FirstOrDefault();
+
+                            updateparent.isContactVerified = true;
+                            updateparent.isEmailVerified = true;
+                            updateparent.ConfirmPassword = success.Password;
+
+                            success.Note = "Contact Information Verified, Waiting for Payment";
+                            dbModel.SaveChanges();
+                            ViewBag.SuccessMessage = "Validation Complete";
+                            return RedirectToAction("Dashboard");
+                        }
+                        catch (DbEntityValidationException dbEx)
+                        {
+                            foreach (var validationErrors in dbEx.EntityValidationErrors)
+                            {
+                                foreach (var validationError in validationErrors.ValidationErrors)
+                                {
+                                    ViewBag.ErrorMessage += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                                }
+                            }
+                            return View(parent);
+                        }
                     }
                     else
                     {

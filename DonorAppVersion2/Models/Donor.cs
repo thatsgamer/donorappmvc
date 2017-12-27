@@ -70,10 +70,15 @@ public partial class Donor
 
     public bool isEmailVerified { get; set; }
 
+    
+    [Display(Name = "Date of Birth")]
+    [DataType(DataType.Date, ErrorMessage="Invalid Date")]
     public string DateOfBirth { get; set; }
 
+    [Display(Name = "Eye Color")]
     public string EyeColor { get; set; }
 
+    [Range(50, 500, ErrorMessage="Invalid Height")]
     public int Height { get; set; }
 
     public string Race { get; set; }
@@ -87,6 +92,7 @@ public partial class Donor
     public string Password { get; set; }
 
 
+    [Display(Name = "Confirm Password")]
     [DataType(DataType.Password)]
     [Compare("Password", ErrorMessage = "Password did not match")]
     public string ConfirmPassword { get; set; }

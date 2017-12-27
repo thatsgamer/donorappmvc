@@ -1,6 +1,7 @@
 ﻿using DonorAppVersion2.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -263,37 +264,60 @@ namespace DonorAppVersion2.Controllers
                 }
                 else
                 {
-                    return View(donor);
+                    DonorVerificationViewModel dvvm = new DonorVerificationViewModel();
+                    dvvm.DonorId = donor.DonorId;
+                    dvvm.ContactNumber = donor.ContactNumber;
+                    dvvm.ContactVerificationCode = donor.ContactVerificationCode;
+                    dvvm.Email = donor.Email;
+                    dvvm.EmailVerificationCode = donor.EmailVerificationCode;
+                    return View(dvvm);
+                  
+                    // return View(donor);
                 }
             }
         }
         [HttpPost]
-        public ActionResult Verification(Donor donor)
+        public ActionResult Verification(DonorVerificationViewModel donor)
         {
-                using (sampleEntities dbModel = new sampleEntities())
+            using (sampleEntities dbModel = new sampleEntities())
+            {
+                var success = dbModel.Donors.Where(p => p.EmailVerificationCode == donor.EmailVerificationCode && p.ContactVerificationCode == donor.ContactVerificationCode).FirstOrDefault();
+                if (success != null)
                 {
-
-                    var success = dbModel.Donors.Where(p => p.EmailVerificationCode == donor.EmailVerificationCode && p.ContactVerificationCode == donor.ContactVerificationCode).FirstOrDefault();
-                    if (success != null)
+                    try
                     {
-                        Donor updateDonor = (from p in dbModel.Donors
-                                               where p.DonorId == donor.DonorId
-                                               select p).FirstOrDefault();
+                        var updatedonor = dbModel.Donors.Where(did => did.DonorId == success.DonorId).FirstOrDefault();
 
-                        updateDonor.isContactVerified = true;
-                        updateDonor.isEmailVerified = true;
+                        updatedonor.isContactVerified = true;
+                        updatedonor.isEmailVerified = true;
+                        updatedonor.ConfirmPassword = success.Password;
+                        updatedonor.Height = success.Height;
+
                         dbModel.SaveChanges();
 
-                        //ViewBag.SuccessMessage = "Validation Complete";
+                        ViewBag.SuccessMessage = "Validation Complete";
+                        //return View(donor);
                         return RedirectToAction("Dashboard");
                     }
-                    else
+                    catch (DbEntityValidationException dbEx)
                     {
-                        ViewBag.ErrorMessage = "OTP Entered are Invalid, Please verify and try again!";
-                        return View();
+                        foreach (var validationErrors in dbEx.EntityValidationErrors)
+                        {
+                            foreach (var validationError in validationErrors.ValidationErrors)
+                            {
+                                ViewBag.ErrorMessage += string.Format("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                            }
+                        }
+                        return View(donor);
                     }
-
                 }
+                else
+                {
+                    ViewBag.ErrorMessage = "OTP Entered are Invalid, Please verify and try again!";
+                    return View();
+                }
+            }
+                
             
         }
 
@@ -417,7 +441,8 @@ namespace DonorAppVersion2.Controllers
             return BitConverter.ToString(hashedBytes);
         }
 
-        
+        ///////////////////////////////////////////////////////////////////////////////////////////// Approve Reject Donor Cycle
+
         public ActionResult ApproveDonorCycle(int id)
         {
             if(Session["DonorId"]!= null)
@@ -516,6 +541,9 @@ namespace DonorAppVersion2.Controllers
                 return RedirectToAction("SessionTimeout");
             }
         }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////// Donor Update
+
         public ActionResult SubmitUpdate(int id)
         {
             if (Session["DonorId"] != null)
