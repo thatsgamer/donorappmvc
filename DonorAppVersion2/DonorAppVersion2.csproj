@@ -107,6 +107,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\DatabaseScript.sql" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.original-backup.min.css" />
@@ -347,6 +348,7 @@
     <Content Include="Views\PayPal\RedirectFromPaypal.cshtml" />
     <Content Include="Views\Parent\ViewDonorCycle.cshtml" />
     <Content Include="Views\Donor\SubmitUpdate.cshtml" />
+    <Content Include="Views\Donor\SubmitNewUpdate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -355,7 +357,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
     <Folder Include="Files\" />
   </ItemGroup>
   <ItemGroup>

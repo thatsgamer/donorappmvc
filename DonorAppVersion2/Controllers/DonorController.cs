@@ -417,57 +417,49 @@ namespace DonorAppVersion2.Controllers
             return BitConverter.ToString(hashedBytes);
         }
 
+        
         public ActionResult ApproveDonorCycle(int id)
         {
             if(Session["DonorId"]!= null)
             {
                 using (sampleEntities dbModel = new sampleEntities())
                 {
-                    var donorCycle = dbModel.DonorCycles.Where(dc => dc.DonorCycleId == id).FirstOrDefault();
-                    if (donorCycle != null)
+                    var donorCycle = dbModel.DonorCycles.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
+                    donorCycle.isApprovedByDonor = true;
+                    dbModel.SaveChanges();
+                    ViewBag.SuccessMessage = "Cycle Approved!";
+
+                }
+
+                using (sampleEntities dbModel2 = new sampleEntities())
+                {
+                    DonorCycleUpdate donorCycleUpdate = new DonorCycleUpdate();
+                    donorCycleUpdate.DonorCycleId = id;
+                    donorCycleUpdate.UpdateDate = System.DateTime.Today;
+                    donorCycleUpdate.UpdateDescription = "Donor Has Approved this Donor Cycle.";
+                    donorCycleUpdate.UpdateHeading = "Approved!";
+                    donorCycleUpdate.CompletionDate = null;
+                    donorCycleUpdate.isCompleted = false;
+                    donorCycleUpdate.isSubmitted = true;
+
+                    dbModel2.DonorCycleUpdates.Add(donorCycleUpdate);
+                    dbModel2.SaveChanges();
+                    
+                    ViewBag.SuccessMessage += "First donor cycle update was published";   
+                }
+
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var sessiondonorid = int.Parse(Session["DonorId"].ToString());
+                    var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
+                    var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
+
+                    var viewModel = new DonorAndDonorCycleViewModel
                     {
-                        donorCycle.isApprovedByDonor = true;
-
-                        try
-                        {
-                            var donorUpdate = dbModel.DonorCycleUpdates.FirstOrDefault();
-
-                            donorUpdate.DonorCycleId = id;
-                            donorUpdate.UpdateHeading = "Approved!";
-                            donorUpdate.UpdateDescription = "Donor Has Approved this Donor Cycle.";
-                            donorUpdate.UpdateDate = System.DateTime.Today;
-                            donorUpdate.isSubmitted = true;
-                            donorUpdate.isCompleted = false;
-                            donorUpdate.CompletionDate = null;
-
-                            dbModel.DonorCycleUpdates.Add(donorUpdate);
-                            dbModel.SaveChanges();
-
-                            ViewBag.SuccessMessage = "Donor Cycle Approved!";
-
-
-                            var sessiondonorid = int.Parse(Session["DonorId"].ToString());
-                            var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
-                            var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
-
-                            var viewModel = new DonorAndDonorCycleViewModel
-                            {
-                                Donor = donor,
-                                DonorCycle = donorcycles
-                            };
-                            return RedirectToAction("Dashboard", viewModel);
-                        }
-                        catch (Exception ex)
-                        {
-                            ViewBag.ErrorMessage = ex.Message;
-                            return RedirectToAction("Dashboard");
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Invalid Donor Cycle";
-                        return RedirectToAction("Dashboard");
-                    }
+                        Donor = donor,
+                        DonorCycle = donorcycles
+                    };
+                    return RedirectToAction("Dashboard", viewModel);                    
                 }
             }
             else
@@ -481,48 +473,42 @@ namespace DonorAppVersion2.Controllers
             {
                 using (sampleEntities dbModel = new sampleEntities())
                 {
-                    var donorCycle = dbModel.DonorCycles.Where(dc => dc.DonorCycleId == id).FirstOrDefault();
-                    if (donorCycle != null)
+                    var donorCycle = dbModel.DonorCycles.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
+                    donorCycle.isApprovedByDonor = false;
+                    dbModel.SaveChanges();
+                    ViewBag.SuccessMessage = "Cycle Rejected!";
+
+                }
+
+                using (sampleEntities dbModel2 = new sampleEntities())
+                {
+                    DonorCycleUpdate donorCycleUpdate = new DonorCycleUpdate();
+                    donorCycleUpdate.DonorCycleId = id;
+                    donorCycleUpdate.UpdateDate = System.DateTime.Today;
+                    donorCycleUpdate.UpdateDescription = "Donor Has Rejected this Donor Cycle.";
+                    donorCycleUpdate.UpdateHeading = "Rejected!";
+                    donorCycleUpdate.CompletionDate = System.DateTime.Today;
+                    donorCycleUpdate.isCompleted = true;
+                    donorCycleUpdate.isSubmitted = true;
+
+                    dbModel2.DonorCycleUpdates.Add(donorCycleUpdate);
+                    dbModel2.SaveChanges();
+
+                    ViewBag.SuccessMessage += "First donor cycle update was published";
+                }
+
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var sessiondonorid = int.Parse(Session["DonorId"].ToString());
+                    var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
+                    var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
+
+                    var viewModel = new DonorAndDonorCycleViewModel
                     {
-                        //donorCycle.isApprovedByDonor = true;
-                        try
-                        {
-                            var donorUpdate = dbModel.DonorCycleUpdates.Where(dc => dc.DonorCycleId == id).FirstOrDefault();
-                            
-                            donorUpdate.DonorCycleId = id;
-                            donorUpdate.UpdateDate = System.DateTime.Today;
-                            donorUpdate.UpdateDescription = "Donor Has Rejected this Donor Cycle.";
-                            donorUpdate.UpdateHeading = "Rejected!";
-                            donorUpdate.CompletionDate = System.DateTime.Today;
-                            donorUpdate.isCompleted = true;
-                            donorUpdate.isSubmitted = true;
-
-                            dbModel.SaveChanges();
-                           
-
-                            var sessiondonorid = int.Parse(Session["DonorId"].ToString());
-                            var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
-                            var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
-
-                            var viewModel = new DonorAndDonorCycleViewModel
-                            {
-                                Donor = donor,
-                                DonorCycle = donorcycles
-                            };
-                            ViewBag.SuccessMessage = "Donor Cycle Rejected!";
-                            return RedirectToAction("Dashboard", viewModel);
-                        }
-                        catch (Exception ex)
-                        {
-                            ViewBag.ErrorMessage = ex.Message;
-                            return RedirectToAction("Dashboard");
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Invalid Donor Cycle";
-                        return RedirectToAction("Dashboard");
-                    }
+                        Donor = donor,
+                        DonorCycle = donorcycles
+                    };
+                    return RedirectToAction("Dashboard", viewModel);
                 }
             }
             else
@@ -530,21 +516,45 @@ namespace DonorAppVersion2.Controllers
                 return RedirectToAction("SessionTimeout");
             }
         }
-
-        public ActionResult SubmitUpdate()
+        public ActionResult SubmitUpdate(int id)
         {
             if (Session["DonorId"] != null)
             {
-                return View();
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var donorCycle = dbModel.DonorCycles.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
+                    var donorcycleUpdate = dbModel.DonorCycleUpdates.Where(dcuid => dcuid.DonorCycleId == donorCycle.DonorCycleId).ToList();
+
+                    var viewModel = new DonorCycleAndUpdates
+                    {
+                        DonorCycle = donorCycle,
+                        DonorCycleUpdate = donorcycleUpdate
+
+                    };
+
+                    return View(viewModel);
+                }
+               
             }
             else
             {
                 return RedirectToAction("SessionTimeout");
             }
         }
-
+        public ActionResult SubmitNewUpdate(int id)
+        {
+            if(Session["DonorId"] != null)
+            {
+                ViewBag.donorCycleId = id;
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }       
         [HttpPost]
-        public ActionResult SubmitUpdate(DonorCycleUpdate dcu)
+        public ActionResult SubmitNewUpdate(DonorCycleUpdate dcu)
         {
             if (Session["DonorId"] != null)
             {
@@ -552,6 +562,11 @@ namespace DonorAppVersion2.Controllers
                 {
                     try
                     {
+                        dcu.UpdateDate = System.DateTime.Today;
+                        dcu.CompletionDate = null;
+                        dcu.isCompleted = false;
+                        dcu.isSubmitted = false;
+
                         dbModel.DonorCycleUpdates.Add(dcu);
                         dbModel.SaveChanges();
 
@@ -560,8 +575,34 @@ namespace DonorAppVersion2.Controllers
                     }
                     catch(Exception ex)
                     {
-                        ViewBag.ErrorMessage("Error - " + ex.Message);
-                        return View(dcu);
+                        ViewBag.ErrorMessage = "Error - " + ex.Message;
+                        return View();
+                    }
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+        public ActionResult RemoveUpdate(int id)
+        {
+            if(Session["DonorId"]!=null)
+            {
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var donorupdate = dbModel.DonorCycleUpdates.Where(dcuid => dcuid.DonorCycleUpdateId == id).FirstOrDefault();
+                    try
+                    {
+                        dbModel.DonorCycleUpdates.Remove(donorupdate);
+                        dbModel.SaveChanges();
+                        ViewBag.SuccessMessage = "Update Removed!";
+                        return RedirectToAction("SubmitUpdate", new { @id = donorupdate.DonorCycleId });
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.ErrorMessage = ex.Message;
+                        return RedirectToAction("SubmitUpdate", new { @id = donorupdate.DonorCycleId });
                     }
                 }
             }

@@ -1,0 +1,49 @@
+﻿@model DonorAppVersion2.Models.DonorCycleUpdate
+
+@{
+    ViewBag.Title = "Submit New Update";
+    Layout = "~/Views/Shared/_donorLayout.cshtml";
+}
+
+<h2>Submit New Update</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <h4>Please fill up the details (Don't Include identification information as this will be reviewed first)</h4>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <label class="label label-success">@ViewBag.SuccessMessage</label>
+            <label class="label label-warning">@ViewBag.WarningMessage</label>
+            <label class="label label-danger">@ViewBag.ErrorMessage</label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.DonorCycleId, "Donor Cycle Id", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <input type="text" name="DonorCycleId" value="@ViewBag.donorCycleId" class="form-control" required readonly />
+            @Html.ValidationMessageFor(model => model.DonorCycleId, "", new { @class = "text-danger" })<br />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.UpdateHeading, "Update Heading", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.UpdateHeading, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+            @Html.ValidationMessageFor(model => model.UpdateHeading, "", new { @class = "text-danger" })<br />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.UpdateDescription, "Update Description", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.UpdateDescription, htmlAttributes: new { @class = "form-control", @rows = "4", @required = "required" })
+            @Html.ValidationMessageFor(model => model.UpdateDescription, "", new { @class = "text-danger" })<br />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit Update" class="btn btn-primary btn-block" /><br /><br />
+        </div>
+    </div>
+}

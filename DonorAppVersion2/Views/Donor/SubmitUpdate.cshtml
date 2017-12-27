@@ -1,41 +1,67 @@
-﻿@model DonorAppVersion2.Models.DonorCycleUpdate
+﻿@model DonorAppVersion2.Models.DonorCycleAndUpdates
 
 @{
-    ViewBag.Title = "SubmitUpdate";
+    ViewBag.Title = "View Recent Updates";
     Layout = "~/Views/Shared/_donorLayout.cshtml";
 }
 
 <h2>SubmitUpdate</h2>
 
+@{
+    var donorcycleid = "";
+    try
+    {
+        donorcycleid = Model.DonorCycle.DonorCycleId.ToString();
+        var donorid = Model.DonorCycle.DonorId;
+    }
+    catch (Exception ex)
+    {
+        ViewBag.ErrorMessage = ex.Message;
+    }
+}
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Donor Update for Donor Cycle Id : @Request.QueryString["id"].ToString()</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-       
-                <div class="form-group">
-            @Html.LabelFor(model => model.UpdateHeading, "Update Heading", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdateHeading, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
-                @Html.ValidationMessageFor(model => model.UpdateHeading, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.UpdateDescription, "Update Description" , htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.UpdateDescription, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
-                @Html.ValidationMessageFor(model => model.UpdateDescription, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Submit Update" class="btn btn-primary btn-block" />
-            </div>
-        </div>
+    <div class="form-horizontal">
+        <h4>Donor Update for Donor Cycle Id : @donorcycleid</h4>
+        <hr />
+        <h2>Recent Updates</h2>
+            <a href="~/Donor/SubmitNewUpdate/@donorcycleid" class="btn btn-primary">Submit New Update</a>
+        <br /><br />
+        <table class="table table-striped">
+            @{
+                if (Model.DonorCycleUpdate.Count < 1)
+                {
+                    <tr>
+                        <td>
+                            <text>There are no updates posted by you for this donor cycle yet!</text>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <th>Subject</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                   
+                
+                    foreach (DonorAppVersion2.Models.DonorCycleUpdate dcu in Model.DonorCycleUpdate)
+                    {
+                        <tr>
+                            <td>@dcu.UpdateHeading</td>
+                            <td>@dcu.UpdateDescription</td>
+                            <td>@dcu.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                            <td><a href="~/Donor/RemoveUpdate/@dcu.DonorCycleUpdateId" class="label label-danger" style="text-decoration:none"> Remove</a></td>
+                        </tr>
+                    }
+                }
+}
+        </table>
+
     </div>
 }

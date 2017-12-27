@@ -10,18 +10,25 @@
     var contactverify_classname = "";
     var accountstatus = "";
     var class_verifycontactlink = "";
-
-    if (Model.Donor.isContactVerified == true)
-    {
-        contactverify_classname = "accountStatusActive";
-        accountstatus = "Verified";
-        class_verifycontactlink = "hiddencontent";
+    var donor = Model.Donor;
+    if(donor != null)
+    { 
+        if (Model.Donor.isContactVerified == true)
+        {
+            contactverify_classname = "accountStatusActive";
+            accountstatus = "Verified";
+            class_verifycontactlink = "hiddencontent";
+        }
+        else
+        {
+            contactverify_classname = "accountStatusInactive";
+            accountstatus = "Verification Pending";
+            class_verifycontactlink = null;
+        }
     }
     else
     {
-        contactverify_classname = "accountStatusInactive";
-        accountstatus = "Verification Pending";
-        class_verifycontactlink = null;
+        Response.Redirect("SessionTimeout");
     }
 
     var donorCycle = Model.DonorCycle;
@@ -37,24 +44,66 @@
 <div class="row">
     <div class="col-md-9">
         <div style="background-color:#ff6a00; color:#fff; padding:10px; font-size:large">
-            Your Unique Donor21 Donor Id : <strong> @Model.Donor.DonorId</strong>
-
-
+            Your Unique Donor21 Donor Id : <strong> @donor.DonorId</strong>
         </div><hr />
         <h4>Your Donor Cycle Involvement</h4>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label class="label label-success">@ViewBag.SuccessMessage</label>
+                <label class="label label-warning">@ViewBag.WarningMessage</label>
+                <label class="label label-danger">@ViewBag.ErrorMessage</label>
+            </div>
+        </div>
         <table class="table table-striped" style="font-size:xx-small;">
 
             @if (donorcycleid > 0)
             {
                 <tr>
                     <th>Parent Id</th>
-                    <th>Month and Year of Retrival</th>
+                    <th>Retrival on</th>
                     <th>Fertility Attorny</th>
                     <th>Donors Eye Color</th>
                     <th>Donors Height</th>
                     <th>Donors Age</th>
+                    <th>Agency/Clinic Approval</th>
                     <th>Action</th>
                 </tr>
+                foreach (DonorAppVersion2.Models.DonorCycle cycle in donorCycle)
+                {
+                    <tr>
+                        <td>@cycle.ParentId</td>
+                        <td>@cycle.MonthAndYearOfRetrieval</td>
+                        <td>@cycle.FertilityAttorny</td>
+                        <td>@cycle.DonorEyeColor</td>
+                        <td>@cycle.DonorHeight</td>
+                        <td>@cycle.DonorAge</td>
+                        <td>
+                            @{
+                                if (cycle.isApprovedByClinic == true || cycle.isApprovedByAgency == true)
+                                {
+                                    <input type="checkbox" checked/>
+                                }
+                                else
+                                {
+                                    <input type="checkbox"  />
+                                }
+                            }
+                        </td>
+                        <td>
+                            @{
+                                if (cycle.isApprovedByDonor == false)
+                                {
+                                    @Html.ActionLink("Approve", "ApproveDonorCycle", "Donor", new { @id = @cycle.DonorCycleId }, new { @class = "label label-success" });
+                                    @Html.ActionLink("Reject", "RejectDonorCycle", "Donor", new { @id = @cycle.DonorCycleId }, new { @class = "label label-danger" });
+                                }
+                                else
+                                {
+                                    <a href="~/Donor/SubmitUpdate/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">Submit Update</a>
+                                }
+                            }
+                        </td>
+                    </tr>
+                }
             }
             else
             {
@@ -64,48 +113,12 @@
                     </td>
                 </tr>
             }
-
-            @foreach (DonorAppVersion2.Models.DonorCycle cycle in donorCycle)
-            {
-                <tr>
-                    <td>@cycle.ParentId</td>
-                    <td>@cycle.MonthAndYearOfRetrieval</td>
-                    <td>@cycle.FertilityAttorny</td>
-                    <td>@cycle.DonorEyeColor</td>
-                    <td>@cycle.DonorHeight</td>
-                    <td>@cycle.DonorAge</td>
-                    <td>
-                        @{
-                            if (cycle.isApprovedByDonor == false)
-                            {
-                                <a href="~/Donor/ApproveDonorCycle/@cycle.DonorCycleId" style="text-decoration:none" class="label label-success">Approve</a><a href="~/Donor/RejectDonorCycle/@cycle.DonorCycleId" class="label label-danger" style="text-decoration:none">Reject</a>
-                            }
-                            else
-                            {
-                                <a href="~/Donor/SubmitUpdate" class="label label-primary" style="text-decoration:none">Submit Update</a>
-                            }
-}
-
-                    </td>
-
-
-
-                </tr>
-            }
-
-
         </table>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <label class="label label-success">@ViewBag.SuccessMessage</label>
-                <label class="label label-warning">@ViewBag.WarningMessage</label>
-                <label class="label label-danger">@ViewBag.ErrorMessage</label>
-            </div>
-        </div>
+
     </div>
     <div class="col-md-3">
         @if (accountstatus != "Verified")
-        {        
+        {
             <div style="padding:20px; background-color:#282828; color:#fff">
                 <h4>Account Status</h4><hr />
                 <h3 class="@contactverify_classname">@accountstatus</h3>
@@ -114,9 +127,9 @@
                 <br />
                 <span style="font-size:xx-small;" class="@class_verifycontactlink">You must verify your contact details first to start using your portal</span>
 
-            </div>   
+            </div>
         }
-        
+
     </div>
 </div>
 <script src="~/Scripts/jquery.validate.min.js"></script>
