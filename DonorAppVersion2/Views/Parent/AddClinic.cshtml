@@ -1,0 +1,125 @@
+﻿@model DonorAppVersion2.Models.ParentsRegisteredWithPartner
+
+
+@{
+    ViewBag.Title = "Add Clinic or Agency Associated to Parent : Donor 21";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<h2>Add Clinic</h2>
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+
+<script type="text/javascript">
+    $(document).ready(
+         $(function () {
+             var ddlPartnerss = $("#partners");
+             ddlPartnerss.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+             $.ajax({
+                 type: "POST",
+                 url: "/Parent/GetPartners",
+                 data: '{}',
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (response) {
+                     ddlPartnerss.empty().append('<option selected="selected" value="0">Please select</option>');
+                     $.each(response, function () {
+                         ddlPartnerss.append($("<option></option>").val(this['Value']).html(this['Text']));
+                     });
+                 },
+                 failure: function (response) {
+                     alert(response.responseText);
+                 },
+                 error: function (response) {
+                     alert(response.responseText);
+                 }
+             });
+
+
+             $("#partners").change(function () {
+                 var ddlContacts = $("#contacts");
+                 ddlContacts.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+                 $.ajax({
+                     type: "POST",
+                     url: "/Parent/GetPartnerContacts",
+                     data: JSON.stringify({ id: $("#partners").val() }),
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+                     success: function (response2) {
+                         ddlContacts.empty().append('<option selected="selected" value="0">Please select</option>');
+                         $.each(response2, function () {
+                             ddlContacts.append($("<option></option>").val(this['Value']).html(this['Text']));
+                         });
+                     },
+                     failure: function (response2) {
+                         alert(response2.responseText);
+                     },
+                     error: function (response2) {
+                         alert(response2.responseText);
+                     }
+
+                 });
+             });
+         }));
+</script>
+
+@using (Html.BeginForm("AddClinic", "Parent"))
+{
+    @Html.AntiForgeryToken()
+
+
+
+    <div class="form-horizontal">
+        <h4>You can specify the Clinic or Agencies you are associated with</h4>
+        <hr />
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="label label-danger">@ViewBag.ErrorMessage</label>
+                <label class="label label-warning">@ViewBag.WarningMessage</label>
+                <label class="label label-success">@ViewBag.SuccessMessage</label>
+            </div>
+        </div> <br />
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentPartnerId, "Select Clinic / Agency", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select id="partners" name="ParentPartnerId" class="form-control"></select>
+                @Html.ValidationMessageFor(model => model.ParentPartnerId, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PartnerContactsId, "Select Contact / Doctor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select id="contacts" name="PartnerContactsId" class="form-control"></select>
+                @Html.ValidationMessageFor(model => model.PartnerContactsId, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ParentIdOnPartnersSystem, "Your ID on Their System" , htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ParentIdOnPartnersSystem, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                @Html.ValidationMessageFor(model => model.ParentIdOnPartnersSystem, "", new { @class = "text-danger" })
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save Details" class="btn btn-primary btn-block" />
+            </div>
+        </div>
+
+    </div>
+
+}

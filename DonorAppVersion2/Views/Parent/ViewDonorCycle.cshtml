@@ -1,0 +1,125 @@
+﻿@model DonorAppVersion2.Models.DonorCycleAndUpdates
+
+@{
+    ViewBag.Title = "ViewDonorCycle";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<h2>Donor Cycle Details</h2>
+
+@{
+    var donorcycleid = "";
+    try
+    {
+        donorcycleid = Model.DonorCycle.DonorCycleId.ToString();
+        var donorid = Model.DonorCycle.DonorId;
+    }
+    catch (Exception ex)
+    {
+        ViewBag.ErrorMessage = ex.Message;
+    }
+
+}
+<div>
+    <h4>View Donor Cycle Id : @donorcycleid Details</h4>
+    <div class="form-group">
+        <div class="col-md-12">
+            <label class="label label-danger">@ViewBag.ErrorMessage</label>
+            <label class="label label-warning">@ViewBag.WarningMessage</label>
+            <label class="label label-success">@ViewBag.SuccessMessage</label>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <tr style="font-size:xx-small">
+            <th>Donor Id</th>
+            <th>Month and Year of Retrival</th>
+            <th>Fertility Attorny</th>
+            <th>Donors Eye Color</th>
+            <th>Donors Height(cm)</th>
+            <th>Donors Age</th>
+            <th>Approved by Donor</th>
+            <th>Approved by Clinic / Agency </th>
+
+        </tr>
+        <tr>
+
+            <td>@Model.DonorCycle.DonorId</td>
+            <td>@Model.DonorCycle.MonthAndYearOfRetrieval</td>
+            <td>@Model.DonorCycle.FertilityAttorny</td>
+            <td>@Model.DonorCycle.DonorEyeColor</td>
+            <td>@Model.DonorCycle.DonorHeight</td>
+            <td>@Model.DonorCycle.DonorAge</td>
+            <td>
+                @{
+                    if (Model.DonorCycle.isApprovedByDonor == true)
+                    {
+                        <input id="Checkbox1" type="checkbox" checked="checked" disabled />
+                    }
+                    else
+                    {
+                        <input id="Checkbox1" type="checkbox" disabled />
+                    }
+                }
+            </td>
+
+
+
+            <td>
+                @{
+                    if (Model.DonorCycle.isApprovedByClinic == true || Model.DonorCycle.isApprovedByAgency == true)
+                    {
+                        <input id="Checkbox1" type="checkbox" checked="checked" disabled />
+                    }
+                    else
+                    {
+                        <input id="Checkbox1" type="checkbox" disabled />
+                    }
+                }
+            </td>
+
+
+
+        </tr>
+    </table>
+
+
+    <hr />
+
+    <h2>Updates Posted by Donor</h2>
+    <table class="table table-striped">
+        @{
+            if (Model.DonorCycleUpdate.Count < 1)
+            {
+                <tr>
+                    <td>
+                        <text>There are no updates posted by donor for this donor cycle yet!</text>
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>Subject</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+
+
+                foreach (DonorAppVersion2.Models.DonorCycleUpdate dcu in Model.DonorCycleUpdate)
+                {
+                    <tr>
+                        <td>@dcu.UpdateHeading</td>
+                        <td>@dcu.UpdateDescription</td>
+                        <td>@dcu.UpdateDate.ToString("dd-MMM-yyyy")</td>
+                    </tr>
+                }
+
+            }
+        }
+
+    </table>
+
+
+
+</div>

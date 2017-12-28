@@ -1,0 +1,60 @@
+﻿@model DonorAppVersion2.Models.PayPalModel
+
+@{
+    ViewBag.Title = "Pay Registration Fees";
+   // Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+
+<h2>Registration Fees</h2>
+<p>
+
+    Welcome,
+    Your one time setup fee for Donor 21 Parent Account is $500.
+    <br />
+    Demo Description Lines to be filled with actual description of fees. Demo Description Lines to be filled with actual description of fees. Demo Description Lines to be filled with actual description of fees.<br />
+
+    <br />
+    Proceed here to complete your payment.<br /><br />
+</p>
+
+<br />
+
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="business" value="Donor21.com">
+    <input type="hidden" name="currency_code" value="USD">
+    <input type="hidden" name="cmd" value="_xclick">
+    <div style="padding:25px; border:solid 1px; border-radius:5px">
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <label class="label label-danger">@ViewBag.ErrorMessage</label>
+                <label class="label label-warning">@ViewBag.WarningMessage</label>
+                <label class="label label-success">@ViewBag.SuccessMessage</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.item_name, "Description of the Payment", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <input type="text" name="amount" class="form-control" value="Donor 21 Registration Charges (USD 1)" readonly>
+                <br /> </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.amount, "Amount To Be Paid", htmlAttributes: new { @class = "control-label col-md-4" })
+            <div class="col-md-8">
+                <input type="text" name="amount" class="form-control" value="1" readonly>
+                <br /></div>
+        </div>
+       
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
+                <input type="submit" value="Proceed to Pay via PayPal" class="btn btn-success" />
+                <br /></div>
+        </div>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    </div>
+
+</form>
+

@@ -1,0 +1,72 @@
+﻿@model DonorAppVersion2.Models.ParentMatchRequestViewModel
+
+@{
+    ViewBag.Title = "Your all match requests";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<h2>Match Requests</h2>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>Match requests submitted by you.</h4>
+        <a href="~/Parent/NewRequest" class="btn btn-primary">Submit New Match Request</a>
+        <br /><br />
+        <table class="table table-striped" style="font-size:small;">
+            @{
+                var matchrequests = @Model.ParentMatchRequest;
+                var matchrequestcount = matchrequests.Count();
+            }
+
+            @{
+
+                if (matchrequestcount > 0)
+                {
+                    <tr>
+                        <th>Request Id</th>
+                        <th>Request Date</th>
+                        <th>Request Description</th>
+                        <th>Status</th>
+                        <th>Fees Paid</th>
+                        <th>Actions</th>
+                    </tr>
+                }
+                else
+                {
+                    <tr>
+                        <td>
+                            <text> You have not submitted any match request yet! </text>
+                        </td>
+                    </tr>
+                }
+            }
+
+            @{
+                foreach (DonorAppVersion2.Models.MatchRequestedByParent matchRequest in matchrequests)
+                {
+                        <tr>
+                            <td>@matchRequest.ParentMatchRequestId</td>
+                            <td>@System.DateTime.Parse(matchRequest.RequestDate.ToString()).ToString("dd/MMM/yyyy")</td>
+                            <td>@matchRequest.Note</td>
+                            <td>@matchRequest.Status</td>
+                            <td>@matchRequest.isPaidByParent</td>
+
+
+
+                            @{
+                        if (matchRequest.isPaidByParent == true)
+                        {
+                            <td><a href="#"> View Status </a></td>
+                        }
+                        else
+                        {
+                            <td><a href="#" class="label label-primary" style="text-decoration:none"> Pay fees for this request </a> &nbsp;| &nbsp;<a href="~/Parent/CancelRequest/@matchRequest.ParentMatchRequestId" class="label label-danger" style="text-decoration:none"> Cancel</a></td>
+                        }
+                            }
+                        </tr>
+                    }
+               }
+        </table>
+
+    </div>
+</div>
