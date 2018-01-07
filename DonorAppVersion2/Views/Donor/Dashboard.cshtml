@@ -60,6 +60,7 @@
             {
                 <tr>
                     <th>Parent Id</th>
+                    <th>Child Type</th>
                     <th>Retrival on</th>
                     <th>Fertility Attorny</th>
                     <th>Donors Eye Color</th>
@@ -72,6 +73,7 @@
                 {
                     <tr>
                         <td>@cycle.ParentId</td>
+                        <td>@cycle.ChildType</td>
                         <td>@cycle.MonthAndYearOfRetrieval</td>
                         <td>@cycle.FertilityAttorny</td>
                         <td>@cycle.DonorEyeColor</td>
@@ -126,10 +128,14 @@
                 <a href="~/Donor/Verification/@Session["DonorId"].ToString()" class="@class_verifycontactlink">Verify your Contact Details Now!!</a>
                 <br />
                 <span style="font-size:xx-small;" class="@class_verifycontactlink">You must verify your contact details first to start using your portal</span>
-
             </div>
+             <br />
         }
 
+        <div style="border:solid 1px #ccc; padding:10px; text-align:center">
+            Your Donation Type
+            <h3>@donor.DonorType</h3>
+        </div>
     </div>
 </div>
 <script src="~/Scripts/jquery.validate.min.js"></script>

@@ -590,6 +590,7 @@ namespace DonorAppVersion2.Controllers
                 {
                     try
                     {
+                        ViewBag.donorCycleId = dcu.DonorCycleId;
                         dcu.UpdateDate = System.DateTime.Today;
                         dcu.CompletionDate = null;
                         dcu.isCompleted = false;
@@ -598,8 +599,9 @@ namespace DonorAppVersion2.Controllers
                         dbModel.DonorCycleUpdates.Add(dcu);
                         dbModel.SaveChanges();
 
-                        ViewBag.SuccessMessage("Update Submitted Successfully!");
-                        return View();
+                        ViewBag.SuccessMessage = "Record Updated";                        
+                        return View(dcu);
+
                     }
                     catch(Exception ex)
                     {

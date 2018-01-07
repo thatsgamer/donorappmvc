@@ -5,45 +5,11 @@
     Layout = "~/Views/Shared/_parentLayout.cshtml";
 }
 
-
-
-
 @using (Html.BeginForm("AddDonorCycle","Parent",FormMethod.Post)) 
 {
     @Html.AntiForgeryToken()
 
-    <script type="text/javascript">
-    $(function () {
-        $("#tb_donorid").autocomplete({
-            source: function (request, response) {
-                $.ajax({
-                    url: '/Parent/GetDonorsList/',
-                    data: "{ 'prefix': '" + request.term + "'}",
-                    dataType: "json",
-                    type: "POST",
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        response($.map(data, function (item) {
-                            return item;
-                        }))
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    }
-                });
-            },
-            select: function (e, i) {
-                $("#hfDonor").val(i.item.val);
-            },
-            minLength: 1
-        });
-    });
-    </script>
-
-    <div class="row">
+      <div class="row">
         <div class="col-md-8">
             <h2>Add Donor Cycle</h2>
             <div class="form-horizontal">
@@ -58,6 +24,24 @@
                         <label class="label label-danger">@ViewBag.ErrorMessage</label>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ChildType, "Child Type", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @{
+                            var selectList = new SelectList(
+                            new List<SelectListItem>
+                        {
+                            new SelectListItem {Text = "Donor Egg", Value = "Donor Egg"},
+                            new SelectListItem {Text = "Donor Sperm", Value = "Donor Sperm"},
+                            new SelectListItem {Text = "Donated Embryo", Value = "Donated Embryo"},
+                            new SelectListItem {Text = "Adopted", Value = "Adopted"}
+                        }, "Value", "Text");
+                        }
+                        @Html.DropDownListFor(model => model.ChildType, selectList, "Select", new { @class = "form-control" })
+                    </div>
+                </div>
+
                 <div class="form-group">
                     @Html.LabelFor(model => model.DonorId, "DonorId", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -106,6 +90,18 @@
                         @Html.ValidationMessageFor(model => model.DonorAge, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <span class="control-label col-md-4">Loking for Update From</span>
+                    <div class="col-md-8">
+                        <input id="rb_eggDonor" type="radio" checked name="eggorspermdonor" /> Egg Donor
+                        <input id="rb_spermDonor" type="radio" name="eggorspermdonor" /> Sperm Donor<br />
+                        <input id="rb_maleembryo" type="radio" checked name="maleorfemaleembryo" /> Male Embryo
+                        <input id="rb_femaleembryo" type="radio" name="maleorfemaleembryo" />  Female Embryo<br />
+                        <input id="rb_malegenetic" type="radio" checked name="maleorfemalegenetic" /> Male Genetic Birth Parent
+                        <input id="rb_femalegenetic" type="radio" name="maleorfemalegenetic" />  Female Genetic Birth Parent<br />
+                    </div>
+                </div>
                 <br />
                 <div class="form-group">
                     <div class="col-md-offset-4 col-md-8">
@@ -129,26 +125,3 @@
         
     </div>
 }
-
-
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery-3.2.1.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
-
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#MonthAndYearOfRetrieval').datepicker({
-            dateFormat: "MM/yyyy",
-            showStatus: true,
-            showWeeks: true,
-            currentText: 'Now',
-            autoSize: true,
-            gotoCurrent: true,
-            showAnim: 'blind',
-            highlightWeek: true
-        });
-    });
-</script>

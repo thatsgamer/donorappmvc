@@ -191,137 +191,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AdminSetting.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AllDataModel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AllDataModel.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AllDataModel.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\AllDataModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AllDataModel.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Donor.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DonorAilmentDetail.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\AllDataModel.Context.cs" />
+    <Compile Include="Models\Donor.cs" />
     <Compile Include="Models\DonorAndDonorCycleViewModel.cs" />
-    <Compile Include="Models\DonorCycle.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\DonorCycle.cs" />
     <Compile Include="Models\DonorCycleAndUpdates.cs" />
-    <Compile Include="Models\DonorCycleUpdate.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DonorFamilyTreeDiseaseDetail.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DonorHealthQuestionsAnswered.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\DonorCycleUpdate.cs" />
     <Compile Include="Models\DonorLoginViewModel.cs" />
-    <Compile Include="Models\DonorsRegisteredWithPartner.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\DonorVerificationViewModel.cs" />
-    <Compile Include="Models\FamilyDiseaseQuestion.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FamilyOfIntendedParent.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\FamilyTreeDiseaseDetail.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\GetAllDonors_Result.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\HealthQuestion.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\MatchDetail.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\MatchRequestedByDonor.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\MatchRequestedByParent.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Parent.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParentAilmentDetail.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\MatchRequestedByParent.cs" />
+    <Compile Include="Models\Parent.cs" />
     <Compile Include="Models\ParentAndDonorCyclesViewModel.cs" />
-    <Compile Include="Models\ParentFamilyTreeDiseaseDetail.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\ParentMatchRequestViewModel.cs" />
-    <Compile Include="Models\ParentsHealthQuestionsAnswered.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\ParentsRegisteredWithPartner.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Partner.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PartnerAndTheirContact.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PartnersAttachedToDonorCycle.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PaymentSummuryDonor.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\PaymentSummuryParent.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\ParentsRegisteredWithPartner.cs" />
+    <Compile Include="Models\Partner.cs" />
+    <Compile Include="Models\PartnerAndTheirContacts.cs" />
     <Compile Include="Models\PayPalModel.cs" />
-    <Compile Include="Models\sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sp_helpdiagrams_Result.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>AllDataModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
     <Content Include="packages.config" />
-    <EntityDeploy Include="Models\AllDataModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AllDataModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\AllDataModel.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AllDataModel.edmx</DependentUpon>
-      <LastGenOutput>AllDataModel.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\AllDataModel.edmx.diagram">
-      <DependentUpon>AllDataModel.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\AllDataModel.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AllDataModel.edmx</DependentUpon>
-      <LastGenOutput>AllDataModel.cs</LastGenOutput>
-    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Parent\Registration.cshtml" />
