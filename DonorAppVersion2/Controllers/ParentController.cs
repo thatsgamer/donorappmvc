@@ -92,7 +92,7 @@ namespace DonorAppVersion2.Controllers
                 {
                     if (dbModel.Parents.Any(x => x.Email == parentModel.Email))
                     {
-                        ViewBag.DuplicateMessage = "Existing Email, Please Login if you already have an account!";
+                        ViewBag.ErrorMessage = "Existing Email, Please Login if you already have an account!";
                         return View("Registration", parentModel);
                     }
 
