@@ -5,7 +5,6 @@
    // Layout = "~/Views/Shared/_parentLayout.cshtml";
 }
 
-
 <h2>Registration Fees</h2>
 <p>
 
@@ -21,40 +20,27 @@
 <br />
 
 <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-    <input type="hidden" name="business" value="Donor21.com">
-    <input type="hidden" name="currency_code" value="USD">
+
+    <!-- Identify your business so that you can collect the payments. -->
+    <input type="hidden" name="business" value="business@donor21.com">
+
+    <!-- Specify a Buy Now button. -->
     <input type="hidden" name="cmd" value="_xclick">
-    <div style="padding:25px; border:solid 1px; border-radius:5px"> 
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <label class="label label-danger">@ViewBag.ErrorMessage</label>
-                <label class="label label-warning">@ViewBag.WarningMessage</label>
-                <label class="label label-success">@ViewBag.SuccessMessage</label>
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.item_name, "Description of the Payment", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                <input type="text" name="amount" class="form-control" value="Donor 21 Registration Charges" readonly>
-                <br /> </div>
-        </div>
-        
-        <div class="form-group">
-            @Html.LabelFor(model => model.amount, "Amount To Be Paid", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                <input type="text" name="amount" class="form-control" value="1" readonly>
-                <br /></div>
-        </div>
-       
-        <div class="form-group">
-            <div class="col-md-offset-4 col-md-8">
-                <input type="submit" value="Proceed to Pay via PayPal" class="btn btn-success" />
-                <br /></div>
-        </div>
-        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <!-- Specify details about the item that buyers will purchase. -->
+    Description of Payment
+    <input name="item_name" value="Parents One Time Registration Charges" class="form-control" readonly><br />
+    Amount to be paid
+    <div class="input-group">
+        <span class="input-group-addon">$</span>
+        <input name="amount" value="1" class="form-control" readonly aria-label="Amount">
     </div>
+
+    
+    <input type="hidden" name="currency_code" value="USD">
+    <br />
+    <!-- Display the payment button. -->
+    <input type="submit" class="btn btn-success" name="submit" value="Proceed to Payment" />
 
 </form>
 

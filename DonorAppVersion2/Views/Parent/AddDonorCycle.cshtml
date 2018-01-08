@@ -1,22 +1,35 @@
 ﻿@model DonorAppVersion2.Models.DonorCycle
-
 @{
     ViewBag.Title = "Add Donor Cycle : Parents Portal - Donor21";
     Layout = "~/Views/Shared/_parentLayout.cshtml";
 }
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
 
-@using (Html.BeginForm("AddDonorCycle","Parent",FormMethod.Post)) 
+        $('[name^="u_"]').change(function () {
+            if ($(this).is(":checked")) {
+                $(this).next("select").attr("disabled", false);
+            }
+            else {
+                $(this).next("select").attr("disabled", true);
+            }
+        });
+
+
+    });
+</script>
+@using (Html.BeginForm("AddDonorCycle", "Parent", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
-      <div class="row">
+    <div class="row">
         <div class="col-md-8">
             <h2>Add Donor Cycle</h2>
             <div class="form-horizontal">
                 <h4>Add Information of your current Donor Cycle</h4>
                 <hr />
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <label class="label label-success">@ViewBag.SuccessMessage</label>
@@ -24,13 +37,12 @@
                         <label class="label label-danger">@ViewBag.ErrorMessage</label>
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.ChildType, "Child Type", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
                         @{
-                            var selectList = new SelectList(
-                            new List<SelectListItem>
+    var selectList = new SelectList(
+    new List<SelectListItem>
                         {
                             new SelectListItem {Text = "Donor Egg", Value = "Donor Egg"},
                             new SelectListItem {Text = "Donor Sperm", Value = "Donor Sperm"},
@@ -41,7 +53,6 @@
                         @Html.DropDownListFor(model => model.ChildType, selectList, "Select", new { @class = "form-control" })
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.DonorId, "DonorId", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -50,7 +61,6 @@
                     </div>
                 </div>
                 <input type="hidden" id="hfDonor" name="hfDonorId" />
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.MonthAndYearOfRetrieval, "Month & Year of Retrieval", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -58,7 +68,6 @@
                         @Html.ValidationMessageFor(model => model.MonthAndYearOfRetrieval, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.FertilityAttorny, "Fertility Attorny", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -66,7 +75,6 @@
                         @Html.ValidationMessageFor(model => model.FertilityAttorny, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.DonorEyeColor, "Donor Eye Color", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -74,7 +82,6 @@
                         @Html.ValidationMessageFor(model => model.DonorEyeColor, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.DonorHeight, "Donor Heigth (cm)", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -82,7 +89,6 @@
                         @Html.ValidationMessageFor(model => model.DonorHeight, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group">
                     @Html.LabelFor(model => model.DonorAge, "Donor Age", htmlAttributes: new { @class = "control-label col-md-4" })
                     <div class="col-md-8">
@@ -90,16 +96,29 @@
                         @Html.ValidationMessageFor(model => model.DonorAge, "", new { @class = "text-danger" })
                     </div>
                 </div>
-
                 <div class="form-group">
-                    <span class="control-label col-md-4">Loking for Update From</span>
+                    <span class="control-label col-md-4" style="font-weight:bold">Loking for Update From</span>
                     <div class="col-md-8">
-                        <input id="rb_eggDonor" type="radio" checked name="eggorspermdonor" /> Egg Donor
-                        <input id="rb_spermDonor" type="radio" name="eggorspermdonor" /> Sperm Donor<br />
-                        <input id="rb_maleembryo" type="radio" checked name="maleorfemaleembryo" /> Male Embryo
-                        <input id="rb_femaleembryo" type="radio" name="maleorfemaleembryo" />  Female Embryo<br />
-                        <input id="rb_malegenetic" type="radio" checked name="maleorfemalegenetic" /> Male Genetic Birth Parent
-                        <input id="rb_femalegenetic" type="radio" name="maleorfemalegenetic" />  Female Genetic Birth Parent<br />
+                        <input type='checkbox' name='u_donor'>
+                        <select id="select_donor" name="select_donor" class="form-control" disabled>
+                            <option>Egg Donor</option>
+                            <option>Sperm Donor</option>
+                        </select>
+                        <br />
+
+                        <input type='checkbox' name='u_embryo'>
+                        <select id="select_embryo" name="select_embryo" class="form-control" disabled>
+                            <option>Male Embryo</option>
+                            <option>Female Embryo</option>
+                        </select>
+                        <br />
+
+                        <input type='checkbox' name='u_genetic'>
+                        <select id="select_genetic" name="select_genetic" class="form-control" disabled>
+                            <option>Male Genetic Birth Parent</option>
+                            <option>Female  Genetic Birth Parent</option>
+                        </select>
+                        <br />
                     </div>
                 </div>
                 <br />
@@ -122,6 +141,6 @@
                 <li>You have to pay charges for your each active donor cycle</li>
             </ul>
         </div>
-        
+
     </div>
 }
