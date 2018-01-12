@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
@@ -84,6 +85,9 @@ namespace DonorAppVersion2.Controllers
                                 donorModel.Salt = ComputeHash(donorModel.Password);
 
                                 //Save Data to Database
+
+                                SendEmailOTP(donorModel.EmailVerificationCode, donorModel.ContactVerificationCode, donorModel.Email);
+
                                 dbModel.Donors.Add(donorModel);
                                 dbModel.SaveChanges();
                                 ModelState.Clear();
@@ -439,6 +443,36 @@ namespace DonorAppVersion2.Controllers
             Byte[] hashedBytes = algorithm.ComputeHash(inputBytes);
 
             return BitConverter.ToString(hashedBytes);
+        }
+        public string SendEmailOTP(string emailotp, string smsotp, string emailto)
+        {
+            try
+            {
+                string smtpserver = "smtp.gmail.com";
+                string emailfrom = "donor21updates@gmail.com";
+                string password = "Donor212121";
+                string subject = "OTP for Donor21 Registration";
+                string body = "Your EMAIL OTP for Verification of Donor 21 Registration is : " + emailotp + " <br> & Your SMS OTP for verification is : " + smsotp;
+
+                MailMessage mail = new MailMessage();
+                SmtpClient SmtpServer = new SmtpClient(smtpserver);
+                mail.IsBodyHtml = true;
+                mail.From = new MailAddress(emailfrom);
+                mail.To.Add(emailto);
+                mail.Subject = subject;
+                mail.Body = body;
+
+                SmtpServer.Port = 587;
+                SmtpServer.Credentials = new System.Net.NetworkCredential(emailfrom, password);
+                SmtpServer.EnableSsl = true;
+
+                SmtpServer.Send(mail);
+                return "SUCCESS";
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         ///////////////////////////////////////////////////////////////////////////////////////////// Approve Reject Donor Cycle

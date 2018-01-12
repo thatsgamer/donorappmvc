@@ -139,6 +139,8 @@ namespace DonorAppVersion2.Controllers
                             
                             //Save Data to Database
                             dbModel.Parents.Add(parentModel);
+                            SendEmailOTP(parentModel.EmailVerificationCode, parentModel.ContactVerificationCode, parentModel.Email);
+
 
                             var settings = dbModel.AdminSettings.FirstOrDefault();
                             var regfeeamount = settings.ParentRegistrationCharges;
@@ -177,6 +179,7 @@ namespace DonorAppVersion2.Controllers
                             //ViewBag.SuccessMessage = "Account Created Successfully! Please login to complete the registration!";
 
                             //Redirect to Verification Page
+                            
                             return RedirectToAction("Verification", "Parent", new { @id = parentModel.ParentId });
 
                             //return View("Registration", new Parent());
@@ -250,6 +253,7 @@ namespace DonorAppVersion2.Controllers
                     else
                     {
                         return View(parent);
+                        //return View();
                     }
             }
         }
@@ -622,19 +626,19 @@ namespace DonorAppVersion2.Controllers
             Session.Clear();
             return View();
         }
-        public string SendEmailOTP(string otp, string emailto)
+        public string SendEmailOTP(string emailotp, string smsotp, string emailto)
         {
             try
             {
                 string smtpserver = "smtp.gmail.com";
-                string emailfrom = "abc@gmail.com";
-                string password = "password";
+                string emailfrom = "donor21updates@gmail.com";
+                string password = "Donor212121";
                 string subject = "OTP for Donor21 Registration";
-                string body = "Your OTP for Verification of Donor 21 Registration is : <b> " + otp + " </b>";
+                string body = "Your EMAIL OTP for Verification of Donor 21 Registration is : " + emailotp + " <br> & Your SMS OTP for verification is : " + smsotp;
 
                 MailMessage mail = new MailMessage();
                 SmtpClient SmtpServer = new SmtpClient(smtpserver);
-
+                mail.IsBodyHtml = true;
                 mail.From = new MailAddress(emailfrom);
                 mail.To.Add(emailto);
                 mail.Subject = subject;
