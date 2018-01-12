@@ -18,6 +18,6 @@ namespace DonorAppVersion2.Models
         public bool isCompleted { get; set; }
         public Nullable<System.DateTime> CompletionDate { get; set; }
 
-        public List<DonorCycle> DonorCycle { get; set; }
+        public virtual DonorCycleEgg DonorCycleEgg { get; set; }
     }
 }

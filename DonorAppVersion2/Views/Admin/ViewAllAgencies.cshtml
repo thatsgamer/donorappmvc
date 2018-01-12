@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.Partner>
+
+@{
+    ViewBag.Title = "View All Agencies / Partners";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>View All Agencies / Partners</h2>
+
+<table class="table table-striped">
+    @if (Model.Count() > 0)
+    {
+        <tr>
+            <th>Partner ID</th>
+            <th>Name of Agency</th>
+            <th>Contact Details</th>
+            <th>Contact Person Details</th>
+            <th>Active Since</th>
+            <th>Status</th>
+        </tr>
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PartnerId</td>
+                <td>@item.Name <br /><small>Type : @item.AssociationType</small></td>
+                <td>
+                    @item.Address <br />
+                    @item.State , @item.Zip<br />
+                    Contact No : @item.BusinessContact<br />
+                    Email : @item.BusinessEmail <br />
+                    Website : @item.BusinessWebsite
+                </td>
+                <td>
+                    Name : @item.ContactPersonName<br />
+                    Email : @item.ContactPersonEmail<br />
+                    Contact : @item.ContactPersonContact
+                </td>
+                <td>@item.CreationDate.ToString("dd/MMM/yyyy")</td>
+                <td>
+                    @if (item.isActive == false)
+                    {
+                        <span style="color:orangered">INACTIVE</span>
+                        <br />
+                        <a href="#" class="label label-success" style="text-decoration:none">Mark As Active</a>
+                    }
+                    else
+                    {
+                        <span style="color:green">ACTIVE</span><br />
+                        <a href="#" class="label label-danger" style="text-decoration:none">Mark As Inavtive</a>
+                    }
+                </td>
+
+
+
+            </tr>
+        }
+
+    }
+    else
+    {
+        <tr>
+            <td>
+                <small>There are no partners registered yet!</small>
+            </td>
+        </tr>
+    }
+
+
+</table>

@@ -1,0 +1,105 @@
+﻿@model DonorAppVersion2.Models.Partner
+
+@{
+    ViewBag.Title = "Add Agency : Donor 21";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+<h2>Add New Agency (Professional Partner)</h2>
+<hr />
+
+@using (Html.BeginForm("AddAgency", "Admin", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <div class="col-md-12">
+            <label class="label label-success">@ViewBag.SuccessMessage</label>
+            <label class="label label-warning">@ViewBag.WarningMessage</label>
+            <label class="label label-danger">@ViewBag.ErrorMessage</label>
+        </div>
+    </div>
+
+    <small>Select Association / Agency Type</small>
+    <select name="AssociationType" class="form-control">
+        <option>Clinic</option>    
+        <option>Adoption Agency</option>    
+        <option>Fertility Center</option>    
+        <option>Sperm Bank</option>    
+        <option>Other Agency</option>    
+    </select>    
+    @Html.ValidationMessageFor(model=>model.AssociationType, "", new { @class = "text-danger" })
+    
+    <br />
+    <small>Name of Association / Agency</small>
+    <input name="Name" class="form-control" required />
+    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Address</small>
+    <textarea name="Address" class="form-control" rows="4" required></textarea>
+    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+
+
+    <br />
+    <small>State</small>
+    <input name="State" class="form-control" />
+    @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Zipcode</small>
+    <input name="Zip" class="form-control" />
+    @Html.ValidationMessageFor(model => model.Zip, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Contact Number</small>
+    <input type="tel" name="BusinessContact" class="form-control" required />
+    @Html.ValidationMessageFor(model => model.BusinessContact, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Website</small>
+    <input type="url" name="BusinessWebsite" class="form-control" />
+    @Html.ValidationMessageFor(model => model.BusinessWebsite, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Email Address</small>
+    <input type="email" name="BusinessEmail" class="form-control" required />
+    @Html.ValidationMessageFor(model => model.BusinessEmail, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Contact Person Name</small>
+    <input name="ContactPersonName" class="form-control" required />
+    @Html.ValidationMessageFor(model => model.ContactPersonName, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Contact Persons Phone Number</small>
+    <input type="tel" name="ContactPersonContact" class="form-control" required />
+    @Html.ValidationMessageFor(model => model.ContactPersonContact, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Contact Persons Email</small>
+    <input type="email" name="ContactPersonEmail" class="form-control" />
+    @Html.ValidationMessageFor(model => model.ContactPersonEmail, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Password</small>
+    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+    @Html.ValidationMessageFor(model => model.ContactPersonEmail, "", new { @class = "text-danger" })
+
+    <br />
+    <small>Confirm Password</small>
+    @Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+    <input type="hidden" name="CreationDate" value="@System.DateTime.Today" />
+    <input type="hidden" name="isActive" value="True" />
+
+    <br />
+    <input type="submit" value="Save Agency Details" class="btn btn-success" />
+}
+

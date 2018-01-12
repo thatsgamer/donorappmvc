@@ -215,13 +215,13 @@ namespace DonorAppVersion2.Controllers
                 using (sampleEntities dbModel = new sampleEntities())
                 {
                     var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
-                    var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
+                    var donorcycles = dbModel.DonorCycleEgg.Where(p => p.DonorId == sessiondonorid).ToList();
 
 
                     var viewModel = new DonorAndDonorCycleViewModel
                     {
                         Donor = donor,
-                        DonorCycle = donorcycles
+                        DonorCycleEgg = donorcycles
                     };
 
                     if (donor != null && donorcycles != null)
@@ -449,7 +449,7 @@ namespace DonorAppVersion2.Controllers
             {
                 using (sampleEntities dbModel = new sampleEntities())
                 {
-                    var donorCycle = dbModel.DonorCycles.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
+                    var donorCycle = dbModel.DonorCycleEgg.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
                     donorCycle.isApprovedByDonor = true;
                     dbModel.SaveChanges();
                     ViewBag.SuccessMessage = "Cycle Approved!";
@@ -477,12 +477,12 @@ namespace DonorAppVersion2.Controllers
                 {
                     var sessiondonorid = int.Parse(Session["DonorId"].ToString());
                     var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
-                    var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
+                    var donorcycles = dbModel.DonorCycleEgg.Where(p => p.DonorId == sessiondonorid).ToList();
 
                     var viewModel = new DonorAndDonorCycleViewModel
                     {
                         Donor = donor,
-                        DonorCycle = donorcycles
+                        DonorCycleEgg = donorcycles
                     };
                     return RedirectToAction("Dashboard", viewModel);                    
                 }
@@ -498,7 +498,7 @@ namespace DonorAppVersion2.Controllers
             {
                 using (sampleEntities dbModel = new sampleEntities())
                 {
-                    var donorCycle = dbModel.DonorCycles.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
+                    var donorCycle = dbModel.DonorCycleEgg.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
                     donorCycle.isApprovedByDonor = false;
                     dbModel.SaveChanges();
                     ViewBag.SuccessMessage = "Cycle Rejected!";
@@ -526,12 +526,12 @@ namespace DonorAppVersion2.Controllers
                 {
                     var sessiondonorid = int.Parse(Session["DonorId"].ToString());
                     var donor = dbModel.Donors.Where(p => p.DonorId == sessiondonorid).FirstOrDefault();
-                    var donorcycles = dbModel.DonorCycles.Where(p => p.DonorId == sessiondonorid).ToList();
+                    var donorcycles = dbModel.DonorCycleEgg.Where(p => p.DonorId == sessiondonorid).ToList();
 
                     var viewModel = new DonorAndDonorCycleViewModel
                     {
                         Donor = donor,
-                        DonorCycle = donorcycles
+                        DonorCycleEgg = donorcycles
                     };
                     return RedirectToAction("Dashboard", viewModel);
                 }
@@ -550,12 +550,12 @@ namespace DonorAppVersion2.Controllers
             {
                 using (sampleEntities dbModel = new sampleEntities())
                 {
-                    var donorCycle = dbModel.DonorCycles.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
+                    var donorCycle = dbModel.DonorCycleEgg.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
                     var donorcycleUpdate = dbModel.DonorCycleUpdates.Where(dcuid => dcuid.DonorCycleId == donorCycle.DonorCycleId).ToList();
 
                     var viewModel = new DonorCycleAndUpdates
                     {
-                        DonorCycle = donorCycle,
+                        DonorCycleEgg = donorCycle,
                         DonorCycleUpdate = donorcycleUpdate
 
                     };
@@ -641,5 +641,26 @@ namespace DonorAppVersion2.Controllers
                 return RedirectToAction("SessionTimeout");
             }
         }
+        
+        ///////////////////////////////////////////////////////////////////////////////////////////// My Donor Cycle
+
+        public ActionResult MyDonorCycles()
+        {
+            if(Session["DonorId"]!= null)
+            {
+                using(sampleEntities dbMOdel = new sampleEntities())
+                {
+                    int donorid = int.Parse(Session["DonorId"].ToString());
+                    var donorCycles = dbMOdel.DonorCycleEgg.Where(x => x.DonorId == donorid).ToList();
+                    return View(donorCycles);
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////////////////////////////////// My Donor Cycle
     }
 }

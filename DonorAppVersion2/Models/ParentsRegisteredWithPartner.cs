@@ -11,15 +11,16 @@ namespace DonorAppVersion2.Models
         [Key]
         public int ParentPartnerId { get; set; }
         public int ParentId { get; set; }
+        
+        [Required(ErrorMessage="Plese Select Contact Person")]
         public int PartnerContactsId { get; set; }
         public bool isApproved { get; set;}
-        public DateTime DateOfApproval { get; set; }
+        public Nullable<DateTime> DateOfApproval { get; set; }
 
         public string Status { get; set; }
         public string  ParentIdOnPartnersSystem { get; set; }
 
-
-        public List<Parent> Parent { get; set; }
-        public List<PartnerAndTheirContacts> PartnersAndTheirContacts { get; set; }
+        public virtual Parent Parent { get; set; }
+        public virtual PartnerAndTheirContacts PartnerAndTheirContacts { get; set; }
     }
 }

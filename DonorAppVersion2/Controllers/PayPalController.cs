@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
+
 namespace DonorAppVersion2.Controllers
 {
     public class PayPalController : Controller
@@ -15,10 +16,13 @@ namespace DonorAppVersion2.Controllers
             return View();
         }
 
+
+        [HttpPost]
         public ActionResult RedirectFromPaypal()
         {
             return View();
         }
+        
 
         public ActionResult CancelFromPaypal()
         {

@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Patent Portal</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
 </head>
 <body>
     <div class="navbar navbar-default navbar-fixed-top">
@@ -24,20 +31,58 @@
                     <li>
                         <a href="~/Parent/Dashboard">Dashboard</a>
                     </li>
-                    <li>
-                        <a href="~/Parent/AddClinic">Add Clinic</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+
+                            <li>
+                                <a href="~/Parent/MyChilds">My Donor Cycle Involvment</a>
+                            </li>
+                            <li>
+                                <a href="~/Parent/AddDonorCycle">Submit New Child / Donor Cycle</a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a href="~/Parent/ViewAgencies">My Associated Agencies / Clinics</a>
+                                <a href="~/Parent/AddClinic">Add New Agency / Clinic</a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">View Donor Updates</a></li>
+                        </ul>
                     </li>
-                    <li>
-                        <a href="~/Parent/ParentProfile">Profile</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Match Details <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+
+                            <li>
+                                <a href="~/Parent/RequestMatch">My Match Requests</a>
+                            </li>
+                            <li><a href="~/Parent/NewRequest">Submit New Match Request</a></li>
+                        </ul>
                     </li>
-                    <li>
-                        <a href="~/Parent/RequestMatch">Match Requests</a>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">My Payments<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+
+                            <li>
+                                <a href="~/Parent/MyPendingPayments">Pending Payments</a>
+                            </li>
+                            <li><a href="~/Parent/PaymentHistory">Payment History</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Settings <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/Parent/ParentProfile">Edit Profile</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Reports</a></li>
+                        </ul>
                     </li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
     <li>
-        <a href="#"> Welcome @Session["ParentName"].ToString() </a>
+        <a href="#" style="font-size:xx-small; color:yellow"> Welcome @Session["ParentName"].ToString() [PID : @Session["ParentId"].ToString()]</a>
 
                 </li>
                 <li>
@@ -48,7 +93,7 @@
         </div>
     </div>
 
-    <div class="container body-content">
+    <div class="container body-content"><br />
         @RenderBody()
         <hr />
         <footer>

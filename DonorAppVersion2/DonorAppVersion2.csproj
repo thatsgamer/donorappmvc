@@ -184,6 +184,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\DonorController.cs" />
     <Compile Include="Controllers\ParentController.cs" />
     <Compile Include="Controllers\PartnerController.cs" />
@@ -191,16 +192,24 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\AdminDashboardViewModel.cs" />
+    <Compile Include="Models\AdminDetails.cs" />
+    <Compile Include="Models\AdminLoginViewModel.cs" />
+    <Compile Include="Models\AdminSettings.cs" />
     <Compile Include="Models\AllDataModel.Context.cs" />
+    <Compile Include="Models\ConfirmDonorCycleViewModel.cs" />
     <Compile Include="Models\Donor.cs" />
     <Compile Include="Models\DonorAndDonorCycleViewModel.cs" />
-    <Compile Include="Models\DonorCycle.cs" />
+    <Compile Include="Models\DonorCycleEgg.cs" />
     <Compile Include="Models\DonorCycleAndUpdates.cs" />
     <Compile Include="Models\DonorCycleUpdate.cs" />
     <Compile Include="Models\DonorLoginViewModel.cs" />
     <Compile Include="Models\DonorVerificationViewModel.cs" />
     <Compile Include="Models\MatchRequestedByParent.cs" />
+    <Compile Include="Models\ParentDonorCycleAgencies.cs" />
+    <Compile Include="Models\ParentPayments.cs" />
     <Compile Include="Models\Parent.cs" />
+    <Compile Include="Models\ParentAgenciesViewModel.cs" />
     <Compile Include="Models\ParentAndDonorCyclesViewModel.cs" />
     <Compile Include="Models\ParentMatchRequestViewModel.cs" />
     <Compile Include="Models\ParentsRegisteredWithPartner.cs" />
@@ -240,6 +249,21 @@
     <Content Include="Views\Parent\ViewDonorCycle.cshtml" />
     <Content Include="Views\Donor\SubmitUpdate.cshtml" />
     <Content Include="Views\Donor\SubmitNewUpdate.cshtml" />
+    <Content Include="Views\Parent\MyChilds.cshtml" />
+    <Content Include="Views\Parent\ViewAgencies.cshtml" />
+    <Content Include="Views\Parent\RemoveAgency.cshtml" />
+    <Content Include="Views\Parent\MyPendingPayments.cshtml" />
+    <Content Include="Views\Parent\PaymentHistory.cshtml" />
+    <Content Include="Views\Donor\MyDonorCycles.cshtml" />
+    <Content Include="Views\Parent\ConfirmCycle.cshtml" />
+    <Content Include="Views\Admin\Login.cshtml" />
+    <Content Include="Views\Admin\SessionTimeout.cshtml" />
+    <Content Include="Views\Shared\_adminLayout.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Admin\AddAgency.cshtml" />
+    <Content Include="Views\Admin\ViewAllAgencies.cshtml" />
+    <Content Include="Views\Admin\Settings.cshtml" />
+    <Content Include="Views\Admin\ParentList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

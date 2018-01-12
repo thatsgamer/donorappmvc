@@ -1,0 +1,69 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.ParentPayments>
+
+@{
+    ViewBag.Title = "Payments History";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<h2>Payment History</h2>
+
+<table class="table table-striped">
+    @if (Model.Count() > 0)
+    {
+        <tr>
+            <td>Payment ID</td>
+            <td>Description</td>
+            <td>Amount</td>
+            <td>Generated On</td>
+            <td>Transaction Status</td>
+            <td>Transaction Id</td>
+            <td>Payment Status</td>
+            <td>Error</td>
+            <td>Action</td>
+
+        </tr>
+
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.PaymentId</td>
+                <td>@item.PaymentDescription</td>
+                <td>USD @item.Amount</td>
+                <td>@item.CreationDate.ToString("dd/MMM/yyyy")</td>
+                <td>
+                    @if (item.TransactionStatus == true)
+                    {
+                        <span style="color:green"> Paid </span>
+                    }
+                    else
+                    {
+                        <span style="color:red"> Unpaid </span>
+                    }
+                </td>
+                <td>@item.TransactionId</td>
+                <td>@item.PaymentStatus</td>
+                <td>@item.Error</td>
+                <td>
+                    @if (item.TransactionStatus == false)
+                    {
+                        <a href="#" class="label label-danger" style="text-decoration:none">Pay Now</a>
+                    }
+
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td>No Transactions Found to Show!</td>
+        </tr>
+    }
+
+
+</table>
+
+
+
+
+

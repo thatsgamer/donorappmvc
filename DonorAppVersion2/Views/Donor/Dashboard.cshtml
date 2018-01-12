@@ -31,7 +31,7 @@
         Response.Redirect("SessionTimeout");
     }
 
-    var donorCycle = Model.DonorCycle;
+    var donorCycle = Model.DonorCycleEgg;
     var donorcycleid = 0;
 
     if (donorCycle != null)
@@ -62,35 +62,20 @@
                     <th>Parent Id</th>
                     <th>Child Type</th>
                     <th>Retrival on</th>
-                    <th>Fertility Attorny</th>
                     <th>Donors Eye Color</th>
                     <th>Donors Height</th>
                     <th>Donors Age</th>
-                    <th>Agency/Clinic Approval</th>
                     <th>Action</th>
                 </tr>
-                foreach (DonorAppVersion2.Models.DonorCycle cycle in donorCycle)
+                foreach (DonorAppVersion2.Models.DonorCycleEgg cycle in donorCycle)
                 {
                     <tr>
                         <td>@cycle.ParentId</td>
                         <td>@cycle.ChildType</td>
                         <td>@cycle.MonthAndYearOfRetrieval</td>
-                        <td>@cycle.FertilityAttorny</td>
                         <td>@cycle.DonorEyeColor</td>
                         <td>@cycle.DonorHeight</td>
                         <td>@cycle.DonorAge</td>
-                        <td>
-                            @{
-                                if (cycle.isApprovedByClinic == true || cycle.isApprovedByAgency == true)
-                                {
-                                    <input type="checkbox" checked/>
-                                }
-                                else
-                                {
-                                    <input type="checkbox"  />
-                                }
-                            }
-                        </td>
                         <td>
                             @{
                                 if (cycle.isApprovedByDonor == false)
@@ -132,9 +117,10 @@
              <br />
         }
 
-        <div style="border:solid 1px #ccc; padding:10px; text-align:center">
+        <div style="border:solid 1px #ccc; padding:10px; text-align:center; background-color:#e5e5e5">
             Your Donation Type
-            <h3>@donor.DonorType</h3>
+            <h4 style="margin-top:5px">@donor.DonorType [ @donor.Gender ]</h4>
+            
         </div>
     </div>
 </div>

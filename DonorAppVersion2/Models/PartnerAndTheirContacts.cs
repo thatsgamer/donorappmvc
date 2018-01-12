@@ -17,6 +17,6 @@ namespace DonorAppVersion2.Models
         public string ContactPhone { get; set; }
         public DateTime CreatedDate { get; set; }
 
-        public List<Partner> Partner { get; set; }
+        public virtual Partner Partner { get; set; }
     }
 }

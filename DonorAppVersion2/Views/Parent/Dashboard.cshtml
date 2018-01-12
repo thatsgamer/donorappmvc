@@ -27,7 +27,7 @@
     }
 
 
-    var donorCycle = Model.DonorCycle;
+    var donorCycle = Model.DonorCycleEgg;
     var donorcycleid = 0;
     
     if(donorCycle != null)
@@ -53,7 +53,6 @@
                         <th>Donor Id</th>
                         <th>Child Type</th>
                         <th>Month and Year of Retrival</th>
-                        <th>Fertility Attorny</th>
                         <th>Donors Eye Color</th>
                         <th>Donors Height</th>
                         <th>Donors Age</th>
@@ -69,36 +68,29 @@
                     </tr>
                 }
 
-                    @foreach (DonorAppVersion2.Models.DonorCycle cycle in donorCycle)
-                    {
-                        <tr>
-                            <td>@cycle.DonorId</td>
-                            <td>@cycle.ChildType</td>
-                            <td>@cycle.MonthAndYearOfRetrieval</td>
-                            <td>@cycle.FertilityAttorny</td>
-                            <td>@cycle.DonorEyeColor</td>
-                            <td>@cycle.DonorHeight</td>
-                            <td>@cycle.DonorAge</td>
-                            <td>
-                                @{
-                                    if (cycle.isApprovedByDonor == true || cycle.isApprovedByClinic == true || cycle.isApprovedByAgency == true)
-                                    {
-                                        <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
-                                    }
-                                    else
-                                    {
-                                        <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
-                                        <a href="~/Parent/RemoveDonorCycle/@cycle.DonorCycleId" class="label label-danger" style="text-decoration:none">Remove</a>
-                                    }
-}
-
-
-                            </td>
-
-
-
-                        </tr>
-                    }
+                @foreach (var cycle in donorCycle)
+                {
+                    <tr>
+                        <td>@cycle.DonorId</td>
+                        <td>@cycle.ChildType</td>
+                        <td>@cycle.MonthAndYearOfRetrieval</td>
+                        <td>@cycle.DonorEyeColor</td>
+                        <td>@cycle.DonorHeight</td>
+                        <td>@cycle.DonorAge</td>
+                        <td>
+                                
+                            @if (cycle.isApprovedByDonor == true)
+                            {
+                                <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
+                            }
+                            else
+                            {
+                                <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
+                                <a href="~/Parent/RemoveDonorCycle/@cycle.DonorCycleId" class="label label-danger" style="text-decoration:none">Remove</a>
+                            }
+                        </td>
+                    </tr>
+                }
 
                 
         </table>
@@ -111,8 +103,6 @@
         </div>
         <a href="~/Parent/AddDonorCycle" class="btn btn-primary">Add Donor Cycle</a>
         <hr />
-        Payment Summury
-
 
     </div>
 

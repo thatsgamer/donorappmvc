@@ -15,17 +15,34 @@ namespace DonorAppVersion2.Models
         public string Address { get; set; }
         public string State { get; set; }
         public string Zip { get; set; }
+
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
         public string BusinessContact { get; set; }
+
+        [DataType(DataType.Url, ErrorMessage = "Invalid Website URL")]
         public string BusinessWebsite { get; set; }
+
+        [DataType(DataType.EmailAddress, ErrorMessage = "Invalid Email Address")]
         public string BusinessEmail { get; set; }
         public string ContactPersonName { get; set; }
+
+        [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
         public string ContactPersonContact { get; set; }
+
+
+        [DataType(DataType.EmailAddress, ErrorMessage="Invalid Email Address")]
         public string ContactPersonEmail { get; set; }
 
+        [DataType(DataType.Password)]
+        [StringLength(20, MinimumLength=6, ErrorMessage="Password Must be Atleast 6 Char Long with atleast 1 Symbol and Number")]
         public string Password { get; set; }
 
-        public string Salt { get; set; }
+        [DataType(DataType.Password)]
+        [Compare("Password", ErrorMessage="Password did not match")]
 
+        public string ConfirmPassword { get; set; }
         public DateTime CreationDate { get; set; }
+
+        public bool isActive { get; set; }
     }
 }

@@ -15,8 +15,15 @@ namespace DonorAppVersion2.Models
 
         }
 
+        public virtual DbSet<AdminDetails> AdminDetails { get; set; }
 
-        public virtual DbSet<DonorCycle> DonorCycles { get; set; }
+        public virtual DbSet<AdminSettings> AdminSettings { get; set; }
+
+        public virtual DbSet<ParentDonorCycleAgencies> ParentDonorCycleAgencies { get; set; }
+
+        public virtual DbSet<ParentPayments> ParentPayments { get; set; }
+
+        public virtual DbSet<DonorCycleEgg> DonorCycleEgg { get; set; }
 
         public virtual DbSet<DonorCycleUpdate> DonorCycleUpdates { get; set; }
 

@@ -1,21 +1,24 @@
-﻿@model DonorAppVersion2.Models.Partner
+﻿@model DonorAppVersion2.Models.AdminLoginViewModel
 
 @{
-    ViewBag.Title = "Partner Login : Donor 21"; 
+    ViewBag.Title = "Admin Login";
 }
-@using (Html.BeginForm("Login", "Partner", FormMethod.Post))
+
+@using (Html.BeginForm("Login", "Admin", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
+
     <br /><br /><br /><br />
-    <div style="background-color:#5c000e; padding:35px; border-radius:10px; color:#fff">
+    <div style="background-color:#171717; padding:35px; border-radius:10px; color:#fff">
         <br /><br />
         <div class="row">
-            <div class="col-md-6"><br /><br />
-                <center>
-                    <h2>Login for Partners</h2>
-                    <h4>Business Partners of Donor 21</h4>
+            <div class="col-md-6">
+                <center><br />
+                    <h2>Admin Login</h2>
+                    <h4>Only for Administrators of Donor 21.</h4>
                 </center>
+                
             </div>
             <div class="col-md-6">
                 <div class="form-horizontal">
@@ -23,15 +26,16 @@
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
                             <label class="label label-success">@ViewBag.SuccessMessage</label>
-                            <label class="label label-warning">@ViewBag.DuplicateMessage</label>
+                            <label class="label label-warning">@ViewBag.WarningMessage</label>
                             <label class="label label-danger">@ViewBag.ErrorMessage</label>
                         </div>
                     </div>
+
                     <div class="form-group">
-                        @Html.LabelFor(model => model.BusinessEmail, "Email" , htmlAttributes: new { @class = "control-label col-md-2" })
+                        @Html.LabelFor(model => model.Email, "Email", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-10">
-                            @Html.EditorFor(model => model.BusinessEmail, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
-                            @Html.ValidationMessageFor(model => model.BusinessEmail, "", new { @class = "text-danger" })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
@@ -43,15 +47,13 @@
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Login" class="btn btn-success btn-block" />
+                            <input type="submit" value="Login" class="btn btn-primary btn-block" />
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
         <br /><br />
     </div>
 }
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

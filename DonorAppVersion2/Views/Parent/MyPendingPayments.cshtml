@@ -1,0 +1,73 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.ParentPayments>
+
+@{
+    ViewBag.Title = "My Pending Payments";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<h2>Pending Payments</h2>
+
+
+<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+    <input type="hidden" name="business" value="business@donor21.com">
+    <input type="hidden" name="cmd" value="_xclick">
+    <input type="hidden" name="return" value="http://localhost:59662/Paypal/RedirectFromPaypal">
+    <input type="hidden" name="currency_code" value="USD">
+
+    <table class="table table-striped">
+        @if (Model.Count() > 0)
+        {
+            <tr>
+                <td>Payment ID</td>
+                <td>Description</td>
+                <td>Amount</td>
+                <td>Generated On</td>
+                <td>Transaction Status</td>
+                <td>Action</td>
+
+            </tr>
+
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.PaymentId</td>
+                    <td>@item.PaymentDescription</td>
+                    <td>USD @item.Amount</td>
+                    <td>@item.CreationDate.ToString("dd/MMM/yyyy")</td>
+                    <td>
+                        @if (item.TransactionStatus == true)
+                        {
+                            <span style="color:green"> Paid </span>
+                        }
+                        else
+                        {
+                            <span style="color:red"> Unpaid </span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.TransactionStatus == false)
+                        {
+                            <input type="submit" class="btn btn-sm btn-danger" name="submit" value="Pay Now" />
+
+                            <!-- Specify details about the item that buyers will purchase. -->
+                            <input type="hidden" name="item_name" value="@item.PaymentDescription" class="form-control">
+                            <input type="hidden" name="amount" value="@item.Amount" class="form-control">
+                        }
+
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td>No Pending Transactions Found!</td>
+            </tr>
+        }
+
+    </table>
+    </form>
+
+
+
+

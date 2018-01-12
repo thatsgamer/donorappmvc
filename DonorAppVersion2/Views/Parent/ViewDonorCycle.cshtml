@@ -11,8 +11,8 @@
     var donorcycleid = "";
     try
     {
-        donorcycleid = Model.DonorCycle.DonorCycleId.ToString();
-        var donorid = Model.DonorCycle.DonorId;
+        donorcycleid = Model.DonorCycleEgg.DonorCycleId.ToString();
+        var donorid = Model.DonorCycleEgg.DonorId;
     }
     catch (Exception ex)
     {
@@ -35,26 +35,23 @@
             <th>Donor Id</th>
             <th>Child Type</th>
             <th>Month and Year of Retrival</th>
-            <th>Fertility Attorny</th>
             <th>Donors Eye Color</th>
             <th>Donors Height(cm)</th>
             <th>Donors Age</th>
             <th>Approved by Donor</th>
-            <th>Approved by Clinic / Agency </th>
 
         </tr>
         <tr>
 
-            <td>@Model.DonorCycle.DonorId</td>
-            <td>@Model.DonorCycle.ChildType</td>
-            <td>@Model.DonorCycle.MonthAndYearOfRetrieval</td>
-            <td>@Model.DonorCycle.FertilityAttorny</td>
-            <td>@Model.DonorCycle.DonorEyeColor</td>
-            <td>@Model.DonorCycle.DonorHeight</td>
-            <td>@Model.DonorCycle.DonorAge</td>
+            <td>@Model.DonorCycleEgg.DonorId</td>
+            <td>@Model.DonorCycleEgg.ChildType</td>
+            <td>@Model.DonorCycleEgg.MonthAndYearOfRetrieval</td>
+            <td>@Model.DonorCycleEgg.DonorEyeColor</td>
+            <td>@Model.DonorCycleEgg.DonorHeight</td>
+            <td>@Model.DonorCycleEgg.DonorAge</td>
             <td>
                 @{
-                    if (Model.DonorCycle.isApprovedByDonor == true)
+                    if (Model.DonorCycleEgg.isApprovedByDonor == true)
                     {
                         <input id="Checkbox1" type="checkbox" checked="checked" disabled />
                     }
@@ -64,23 +61,6 @@
                     }
                 }
             </td>
-
-
-
-            <td>
-                @{
-                    if (Model.DonorCycle.isApprovedByClinic == true || Model.DonorCycle.isApprovedByAgency == true)
-                    {
-                        <input id="Checkbox1" type="checkbox" checked="checked" disabled />
-                    }
-                    else
-                    {
-                        <input id="Checkbox1" type="checkbox" disabled />
-                    }
-                }
-            </td>
-
-
 
         </tr>
     </table>

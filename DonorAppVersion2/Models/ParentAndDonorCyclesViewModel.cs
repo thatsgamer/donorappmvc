@@ -9,6 +9,6 @@ namespace DonorAppVersion2.Models
     public class ParentAndDonorCyclesViewModel
     {
         public Parent Parent { get; set; }
-        public List<Models.DonorCycle> DonorCycle { get; set; }        
+        public List<Models.DonorCycleEgg> DonorCycleEgg { get; set; }        
     }
 }

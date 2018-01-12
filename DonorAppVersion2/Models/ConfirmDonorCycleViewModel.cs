@@ -5,9 +5,10 @@ using System.Web;
 
 namespace DonorAppVersion2.Models
 {
-    public class DonorCycleAndUpdates
+    public class ConfirmDonorCycleViewModel
     {
         public DonorCycleEgg DonorCycleEgg { get; set; }
-        public List<Models.DonorCycleUpdate> DonorCycleUpdate { get; set; }        
+        public List<ParentDonorCycleAgencies> ParentDonorCycleAgencies { get; set; }
+
     }
 }

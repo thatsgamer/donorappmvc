@@ -21,6 +21,13 @@ namespace DonorAppVersion2.Controllers
             return View();
         }
 
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Parent Login
 
         [HttpGet]
@@ -74,6 +81,16 @@ namespace DonorAppVersion2.Controllers
                 }
         }
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Parent Registrations
         
         [HttpGet]
@@ -122,6 +139,33 @@ namespace DonorAppVersion2.Controllers
                             
                             //Save Data to Database
                             dbModel.Parents.Add(parentModel);
+
+                            var settings = dbModel.AdminSettings.FirstOrDefault();
+                            var regfeeamount = settings.ParentRegistrationCharges;
+
+                            //Add First Payment Transaction
+                            ParentPayments pp = new ParentPayments();
+                            if (regfeeamount > 0)
+                            {
+                                pp.Amount = regfeeamount;
+                            }
+                            else
+                            {
+                                pp.Amount = 1;
+                            }
+                            pp.Error = "";
+                            pp.ParentId = parentModel.ParentId;
+                            pp.PaymentDescription = "One Time Registration Charges For Parents";
+                            pp.CreationDate = System.DateTime.Today;
+                            pp.PaymentStatus = false;
+                            pp.TransactionDate = null;
+                            pp.TransactionId = null;
+                            pp.TransactionStatus = false;
+
+                            dbModel.ParentPayments.Add(pp);
+
+
+
                             dbModel.SaveChanges();
                             ModelState.Clear();
 
@@ -173,6 +217,16 @@ namespace DonorAppVersion2.Controllers
             }
         }
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Parent Verification
 
         [HttpGet]
@@ -248,6 +302,13 @@ namespace DonorAppVersion2.Controllers
             }           
         }
 
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Parent Dashboard
 
         [HttpGet]
@@ -260,12 +321,12 @@ namespace DonorAppVersion2.Controllers
                 using (sampleEntities dbModel = new sampleEntities())
                 {
                     var parent = dbModel.Parents.Where(p => p.ParentId == sessionparentid).FirstOrDefault();
-                    var donorcycles = dbModel.DonorCycles.Where(p => p.ParentId == sessionparentid).ToList();
+                    var donorcycles = dbModel.DonorCycleEgg.Where(p => p.ParentId == sessionparentid).ToList();
 
                     var viewModel = new ParentAndDonorCyclesViewModel
                     {
                         Parent = parent,
-                        DonorCycle = donorcycles
+                        DonorCycleEgg = donorcycles
                     };
 
                     if (parent != null)
@@ -284,6 +345,15 @@ namespace DonorAppVersion2.Controllers
             }
         }
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Add Donor Cycles
         
         public ActionResult AddDonorCycle()
@@ -291,7 +361,7 @@ namespace DonorAppVersion2.Controllers
             if (Session["ParentId"] != null)
             {
                  
-                DonorCycle donorCycleModel = new DonorCycle();
+                DonorCycleEgg donorCycleModel = new DonorCycleEgg();
                 return View(donorCycleModel);
             }
             else
@@ -301,7 +371,7 @@ namespace DonorAppVersion2.Controllers
             
         }
         [HttpPost]
-        public ActionResult AddDonorCycle(DonorCycle donorCycle)
+        public ActionResult AddDonorCycle(DonorCycleEgg donorCycle)
         {
             if (Session["ParentId"] != null)
             {
@@ -323,17 +393,43 @@ namespace DonorAppVersion2.Controllers
                             else
                             {
                                 donorCycle.ParentId = int.Parse(parentid);
-                                donorCycle.isApprovedByAgency = false;
-                                donorCycle.isApprovedByClinic = false;
                                 donorCycle.isApprovedByDonor = false;
                                 donorCycle.isApprovedByParent = true;
 
-                                dbModel.DonorCycles.Add(donorCycle);
+                                dbModel.DonorCycleEgg.Add(donorCycle);
+
+                                var settings = dbModel.AdminSettings.FirstOrDefault();
+                                var regfeeamount = settings.ParentNewDonorCycleCharges;
+
+                                //Add First Payment Transaction
+                                ParentPayments pp = new ParentPayments();
+                                if (regfeeamount > 0)
+                                {
+                                    pp.Amount = regfeeamount;
+                                }
+                                else
+                                {
+                                    pp.Amount = 1;
+                                }
+                                pp.Error = "";
+                                pp.ParentId = int.Parse(parentid);
+                                pp.PaymentDescription = "New Donor Cycle Type -" + donorCycle.ChildType + " Created on " + System.DateTime.Now.ToString("dd/MMM/yyyy hh:mm tt");
+                                pp.CreationDate = System.DateTime.Today;
+                                pp.PaymentStatus = false;
+                                pp.TransactionDate = null;
+                                pp.TransactionId = null;
+                                pp.TransactionStatus = false;
+
+                                dbModel.ParentPayments.Add(pp);
+
+
                                 dbModel.SaveChanges();
                                 ModelState.Clear();
 
-                                ViewBag.SuccessMessage= "Donor Cycle Added Successfully!";
-                                return View();
+                                //ViewBag.SuccessMessage= "Donor Cycle Added Successfully!";
+                                //return View();
+
+                                return RedirectToAction("ConfirmCycle", new { id = donorCycle.DonorId });
                             }
                         }
                         catch (Exception ex)
@@ -362,6 +458,153 @@ namespace DonorAppVersion2.Controllers
             }
 
         }
+
+
+
+
+
+        public ActionResult ConfirmCycle(int id)
+        {
+
+            if(Session["ParentId"]!= null)
+            {
+                if (id > 0 && id != null)
+                {
+                    using (sampleEntities dbModel = new sampleEntities())
+                    {
+                        var donorCycle = dbModel.DonorCycleEgg.Where(x => x.DonorCycleId == id).FirstOrDefault();
+                        var listAgencies = dbModel.ParentDonorCycleAgencies.Include(y => y.PartnerAndTheirContacts).Include(z => z.PartnerAndTheirContacts.Partner).Where(x => x.DonorCycleId == id).ToList();
+
+                        var viewmodel = new ConfirmDonorCycleViewModel()
+                        {
+                            DonorCycleEgg = donorCycle,
+                            ParentDonorCycleAgencies = listAgencies
+                        };
+
+                        return View(viewmodel);
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Dashboard");
+                }
+                
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+        [HttpPost]
+        public ActionResult ConfirmCycle(ParentDonorCycleAgencies pdca)
+        {
+            if(Session["ParentId"]!= null)
+            {
+                using(sampleEntities dbModel = new sampleEntities())
+                {
+                    try
+                    {
+                        dbModel.ParentDonorCycleAgencies.Add(pdca);
+                        dbModel.SaveChanges();
+                        ViewBag.SuccessMessage = "Agency Added to Donor Cycle";
+
+                        //return RedirectToAction("ConfirmCycle", new { id = pdca.DonorCycleId });
+                        var donorCycle = dbModel.DonorCycleEgg.Where(x => x.DonorCycleId == pdca.DonorCycleId).FirstOrDefault();
+                        var listAgencies = dbModel.ParentDonorCycleAgencies.Include(y => y.PartnerAndTheirContacts).Include(z => z.PartnerAndTheirContacts.Partner).Where(x => x.DonorCycleId == pdca.DonorCycleId).ToList();
+
+                        var viewmodel = new ConfirmDonorCycleViewModel()
+                        {
+                            DonorCycleEgg = donorCycle,
+                            ParentDonorCycleAgencies = listAgencies
+                        };
+
+                        return View(viewmodel);
+
+                    }
+                    catch(Exception ex)
+                    {
+                        ViewBag.ErrorMessage = ex.Message;
+                        return View(pdca);
+                    }
+                }
+                
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+
+
+
+
+
+        public ActionResult GetAssociationTypeForConfirm()
+        {
+            List<SelectListItem> partners = new List<SelectListItem>();
+            using (sampleEntities dbModel = new sampleEntities())
+            {
+                var partnerlistfromdb = dbModel.Partners.ToList();
+                for (int i = 0; i < partnerlistfromdb.Count; i++)
+                {
+                    partners.Add(new SelectListItem
+                    {
+                        Value = partnerlistfromdb[i].AssociationType.ToString(),
+                        Text = partnerlistfromdb[i].AssociationType.ToString(),
+                    });
+                }
+
+
+                return Json(partners, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult GetPartnersForConfirm(string id)
+        {
+            List<SelectListItem> partners = new List<SelectListItem>();
+            using (sampleEntities dbModel = new sampleEntities())
+            {
+                var partnerlistfromdb = dbModel.Partners.Where(x=>x.AssociationType == id).ToList();
+                for (int i = 0; i < partnerlistfromdb.Count; i++)
+                {
+                    partners.Add(new SelectListItem
+                    {
+                        Value = partnerlistfromdb[i].PartnerId.ToString(),
+                        Text = partnerlistfromdb[i].Name
+                    });
+                }
+
+
+                return Json(partners, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult GetPartnerContactsForConfirm(int id)
+        {
+            List<SelectListItem> contacts = new List<SelectListItem>();
+            using (sampleEntities dbModel = new sampleEntities())
+            {
+                var contactlistfromdb = dbModel.PartnerAndTheirContacts.Where(p => p.PartnerId == id).ToList();
+                for (int i = 0; i < contactlistfromdb.Count; i++)
+                {
+                    contacts.Add(new SelectListItem
+                    {
+                        Value = contactlistfromdb[i].PartnerContactsId.ToString(),
+                        Text = contactlistfromdb[i].ContactName + " (" + contactlistfromdb[i].ContactDesignation.ToString() + ")"
+                    });
+                }
+
+
+                return Json(contacts, JsonRequestBehavior.AllowGet);
+            }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         ////////////////////////////////////////////////////////////////// Single Actions and Methods
         
@@ -379,7 +622,7 @@ namespace DonorAppVersion2.Controllers
             Session.Clear();
             return View();
         }
-        public void SendEmailOTP(string otp, string emailto)
+        public string SendEmailOTP(string otp, string emailto)
         {
             try
             {
@@ -402,13 +645,26 @@ namespace DonorAppVersion2.Controllers
                 SmtpServer.EnableSsl = true;
 
                 SmtpServer.Send(mail);
+                return "SUCCESS";
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.ToString());
+                return ex.Message;
             }
         }
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Edit Parent Profile
         
         public ActionResult ParentProfile()
@@ -464,6 +720,16 @@ namespace DonorAppVersion2.Controllers
             }
         }
         
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Add Clinic of Agency
 
         public ActionResult AddClinic()
@@ -485,13 +751,14 @@ namespace DonorAppVersion2.Controllers
                 var parentid = Session["ParentId"].ToString();
                 prwp.ParentId = int.Parse(parentid);
                 prwp.isApproved = false;
-                prwp.DateOfApproval = System.DateTime.Today;
+                prwp.DateOfApproval = null;
                 prwp.Status = "Pending";
                 prwp.PartnerContactsId = prwp.PartnerContactsId;
                 
                 using (sampleEntities dbModel = new sampleEntities())
                 {
-                    ViewBag.ErrorMessage =
+                    
+                    /*ViewBag.ErrorMessage =
                         " Partner ID : " + prwp.ParentPartnerId +
                         ", ParentId ID : " + prwp.ParentId +
                         ", isApproved : " + prwp.isApproved +
@@ -499,7 +766,7 @@ namespace DonorAppVersion2.Controllers
                         ", Status : " + prwp.Status +
                         ", Partner Contact ID : " + prwp.PartnerContactsId;
 
-                    /*
+                     * */
                     try
                     {
                         dbModel.ParentsRegisteredWithPartners.Add(prwp);
@@ -511,7 +778,6 @@ namespace DonorAppVersion2.Controllers
                         ViewBag.ErrorMessage = ex.Message;
 
                     }
-                     * */
                     return View();
                 }
             }
@@ -522,7 +788,10 @@ namespace DonorAppVersion2.Controllers
 
         }
 
-        //[HttpPost]
+        
+        
+        
+        
         public ActionResult GetPartners()
         {
             List<SelectListItem> partners = new List<SelectListItem>();
@@ -541,8 +810,7 @@ namespace DonorAppVersion2.Controllers
 
                 return Json(partners, JsonRequestBehavior.AllowGet);
             }
-        }
-        //[HttpPost]
+        }        
         public ActionResult GetPartnerContacts(int id)
         {
             List<SelectListItem> contacts = new List<SelectListItem>();
@@ -562,8 +830,79 @@ namespace DonorAppVersion2.Controllers
                 return Json(contacts, JsonRequestBehavior.AllowGet);
             }
         }
+        
+        
+        
+        
+        public ActionResult ViewAgencies()
+        {
+            if(Session["ParentId"]!= null)
+            {
+                var parentid = int.Parse(Session["ParentId"].ToString());
+                using(sampleEntities dbModel = new sampleEntities())
+                {
+                    IEnumerable<ParentsRegisteredWithPartner> agencieslist = dbModel.ParentsRegisteredWithPartners.Where(pid=>pid.ParentId == parentid).ToList();
+                    ParentAgenciesViewModel pavm = new ParentAgenciesViewModel();
 
+                    IEnumerable<ParentAgenciesViewModel> agenciesvmlist = agencieslist.Select(x => new ParentAgenciesViewModel { ContactsDesignation = x.PartnerAndTheirContacts.ContactDesignation, DateOfApproval = x.DateOfApproval, ContactsName = x.PartnerAndTheirContacts.ContactName, PartnerType = x.PartnerAndTheirContacts.Partner.AssociationType, PartnerName = x.PartnerAndTheirContacts.Partner.Name, ParentId = x.ParentId, PartnerContactsId = x.PartnerAndTheirContacts.PartnerContactsId, ParentPartnerId = x.ParentPartnerId, isApproved = x.isApproved, ParentIdOnPartnersSystem = x.ParentIdOnPartnersSystem, Status = x.Status });
 
+                    List<ParentAgenciesViewModel> pavm2 = agenciesvmlist.ToList();
+                    return View(pavm2);
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+        public ActionResult RemoveAgency(int id)
+        {
+            if(Session["ParentId"]!=null)
+            {
+                if(id > 0)
+                {
+                    using(sampleEntities dbModel = new sampleEntities())
+                    {
+                        var getagency = dbModel.ParentsRegisteredWithPartners.Where(x => x.ParentPartnerId == id).FirstOrDefault();
+
+                        try
+                        {
+                            dbModel.ParentsRegisteredWithPartners.Remove(getagency);                            
+                            dbModel.SaveChanges();
+                            
+                            return RedirectToAction("ViewAgencies");
+                            
+                        }
+                        catch(Exception ex)
+                        {
+                            ViewBag.ErrorMessage = "Error : " + ex.Message;
+                            return View();
+                        }
+
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("ViewAgencies");
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// JSON OUTPUT
 
         [HttpPost]
@@ -583,7 +922,18 @@ namespace DonorAppVersion2.Controllers
              }
         }
 
-        ////////////////////////////////////////////////////////////////// Registration Fees
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ///////////////////////////////////////////////////////////////// Registration Fees
 
         public ActionResult PayRegistrationFees()
         {
@@ -596,8 +946,17 @@ namespace DonorAppVersion2.Controllers
                 return RedirectToAction("SessionTimeout");
             }
         }
-       
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// Request a Match
 
         public ActionResult RequestMatch()
@@ -689,7 +1048,7 @@ namespace DonorAppVersion2.Controllers
                     }
                     catch (Exception ex)
                     {
-                        ViewBag.ErrorMessage = "There were errors";
+                        ViewBag.ErrorMessage = "There were errors, error = " + ex.Message;
                         return View(mrbp);
                     }
                 }
@@ -701,6 +1060,17 @@ namespace DonorAppVersion2.Controllers
         }
 
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         ////////////////////////////////////////////////////////////////// View Donor Cycle Updates
         public ActionResult ViewDonorCycle(int id)
         {
@@ -710,12 +1080,12 @@ namespace DonorAppVersion2.Controllers
                 {
                     using(sampleEntities dbModel = new sampleEntities())
                     {
-                        var donorCycle = dbModel.DonorCycles.Where(dcid =>  dcid.DonorCycleId == id).FirstOrDefault();
+                        var donorCycle = dbModel.DonorCycleEgg.Where(dcid => dcid.DonorCycleId == id).FirstOrDefault();
                         var donorcycleUpdate = dbModel.DonorCycleUpdates.Where(dcuid => dcuid.DonorCycleId == donorCycle.DonorCycleId).ToList();
 
                         var viewModel = new DonorCycleAndUpdates
                         {
-                            DonorCycle = donorCycle,
+                            DonorCycleEgg = donorCycle,
                             DonorCycleUpdate = donorcycleUpdate
 
                         };
@@ -733,7 +1103,6 @@ namespace DonorAppVersion2.Controllers
                 return RedirectToAction("SessionTimeout");
             }
         }
-
         //[HttpPost]
         public ActionResult RemoveDonorCycle(int id)
         {
@@ -741,11 +1110,11 @@ namespace DonorAppVersion2.Controllers
             {
                 using (sampleEntities DbModel = new sampleEntities())
                 {
-                    var donorcycles = DbModel.DonorCycles.Where(p => p.DonorCycleId == id).FirstOrDefault();
+                    var donorcycles = DbModel.DonorCycleEgg.Where(p => p.DonorCycleId == id).FirstOrDefault();
 
                     if (donorcycles != null)
                     {
-                        DbModel.DonorCycles.Remove(donorcycles);
+                        DbModel.DonorCycleEgg.Remove(donorcycles);
                         DbModel.SaveChanges();
                         ViewBag.SuccessMessage = "Donor Cycle Removed!";
                         return RedirectToAction("Dashboard");
@@ -765,6 +1134,99 @@ namespace DonorAppVersion2.Controllers
 
         }
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        ////////////////////////////////////////////////////////////////// My Donor Cycle Involvment
 
+        public ActionResult MyChilds()
+        {
+            if (Session["ParentId"] != null)
+            {
+                int sessionparentid = int.Parse(Session["ParentId"].ToString());
+                //var isPaid = false;
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var parent = dbModel.Parents.Where(p => p.ParentId == sessionparentid).FirstOrDefault();
+                    var donorcycles = dbModel.DonorCycleEgg.Where(p => p.ParentId == sessionparentid).ToList();
+
+                    var viewModel = new ParentAndDonorCyclesViewModel
+                    {
+                        Parent = parent,
+                        DonorCycleEgg = donorcycles
+                    };
+
+                    if (parent != null)
+                    {
+                        return View(viewModel);
+                    }
+                    else
+                    {
+                        return RedirectToAction("SessionTimeout");
+                    }
+                }
+                
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+        public ActionResult MyPendingPayments()
+        {
+            if(Session["ParentId"]!=null)
+            {
+                var parentid = int.Parse(Session["ParentId"].ToString());
+                using(sampleEntities dbModel = new sampleEntities())
+                {
+
+                    var paymentList = dbModel.ParentPayments.Where(x => x.ParentId == parentid && x.TransactionStatus == false).ToList();
+                    return View(paymentList);
+                }
+                
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+        public ActionResult PaymentHistory()
+        {
+            if (Session["ParentId"] != null)
+            {
+                var parentid = int.Parse(Session["ParentId"].ToString());
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var paymentList = dbModel.ParentPayments.Where(x => x.ParentId == parentid && x.TransactionId != null).ToList();
+                    return View(paymentList);
+                }
+
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+
+        
+
+
+
+
+
+
+
+
+        
     }
 }

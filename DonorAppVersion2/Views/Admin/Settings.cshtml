@@ -1,0 +1,36 @@
+﻿@model DonorAppVersion2.Models.AdminSettings
+
+@{
+    ViewBag.Title = "Admin Settings";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+@{
+    var settingsmodel = Model;
+}
+
+
+<h2>Settings</h2>
+<hr />
+
+@using (Html.BeginForm("Settings", "Admin", FormMethod.Post))
+{
+    <div class="form-group">
+        <div class="col-md-12">
+            <label class="label label-success">@ViewBag.SuccessMessage</label>
+            <label class="label label-warning">@ViewBag.WarningMessage</label>
+            <label class="label label-danger">@ViewBag.ErrorMessage</label>
+        </div>
+    </div>
+
+    <text>Parents One Time Registration Charges ($) </text>
+    @Html.EditorFor(model => model.ParentRegistrationCharges, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+    @Html.ValidationMessageFor(model => model.ParentRegistrationCharges, "", new { @class = "text-danger" })<br />
+
+    <text>Parents New Donor Cycle Charges ($)</text>
+    @Html.EditorFor(model => model.ParentNewDonorCycleCharges, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
+    @Html.ValidationMessageFor(model => model.ParentNewDonorCycleCharges, "", new { @class = "text-danger" })<br />
+
+    <input type="submit" value="Save Settings" class="btn btn-primary" />
+
+}

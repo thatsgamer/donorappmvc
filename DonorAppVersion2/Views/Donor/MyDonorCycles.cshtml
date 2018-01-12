@@ -1,0 +1,59 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.DonorCycleEgg>
+
+@{
+    ViewBag.Title = "My Donor Cycles";
+    Layout = "~/Views/Shared/_donorLayout.cshtml";
+}
+
+<h2>My Donor Cycle Involvement</h2>
+You can Approve or Reject the donor cycle, After approval, you need to post regular updates to your donor cycle so respective parents involved can keep track of it.<hr />
+<table class="table table-striped">
+
+    @if (Model.Count() > 0)
+    {
+        <tr>
+            <th>Parent Id</th>
+            <th>Child Type</th>
+            <th>Retrival on</th>
+            <th>Donors Eye Color</th>
+            <th>Donors Height</th>
+            <th>Donors Age</th>
+            <th>Action</th>
+        </tr>
+
+        foreach (var cycle in Model)
+        {
+            <tr>
+                <td>@cycle.ParentId</td>
+                <td>@cycle.ChildType</td>
+                <td>@cycle.MonthAndYearOfRetrieval</td>
+                <td>@cycle.DonorEyeColor</td>
+                <td>@cycle.DonorHeight</td>
+                <td>@cycle.DonorAge</td>
+                <td>
+                    @if (cycle.isApprovedByDonor == false)
+                    {
+                        @Html.ActionLink("Approve", "ApproveDonorCycle", "Donor", new { @id = @cycle.DonorCycleId }, new { @class = "label label-success" });
+                        @Html.ActionLink("Reject", "RejectDonorCycle", "Donor", new { @id = @cycle.DonorCycleId }, new { @class = "label label-danger" });
+                    }
+                    else
+                    {
+                        <a href="~/Donor/SubmitUpdate/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">Submit Update</a>
+                    }
+
+                </td>
+            </tr>
+        }
+    }
+    else
+    {
+
+        <tr>
+            <td>
+                <text> No recipient has added you to their donor cycle yet! </text>
+            </td>
+        </tr>
+    }
+
+
+</table>

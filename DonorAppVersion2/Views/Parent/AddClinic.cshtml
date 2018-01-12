@@ -6,14 +6,9 @@
     Layout = "~/Views/Shared/_parentLayout.cshtml";
 }
 
-<h2>Add Clinic</h2>
+<h2>Add Agency</h2>
 
-<script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
-<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
-
 
 <script type="text/javascript">
     $(document).ready(
@@ -72,28 +67,28 @@
 {
     @Html.AntiForgeryToken()
 
-
-
     <div class="form-horizontal">
         <h4>You can specify the Clinic or Agencies you are associated with</h4>
         <hr />
+        <a href="~/Parent/ViewAgencies" class="btn btn-success">View your agencies</a>
+
         <div class="form-group">
-            <div class="col-md-12">
-                <label class="label label-danger">@ViewBag.ErrorMessage</label>
-                <label class="label label-warning">@ViewBag.WarningMessage</label>
-                <label class="label label-success">@ViewBag.SuccessMessage</label>
-            </div>
-        </div> <br />
+            <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <label class="label label-danger">@ViewBag.ErrorMessage</label>
+                    <label class="label label-warning">@ViewBag.WarningMessage</label>
+                    <label class="label label-success">@ViewBag.SuccessMessage</label>
+                </div>
+            </div> <br />
 
         <div class="form-group">
             @Html.LabelFor(model => model.ParentPartnerId, "Select Clinic / Agency", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <select id="partners" name="ParentPartnerId" class="form-control"></select>
-                @Html.ValidationMessageFor(model => model.ParentPartnerId, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.ParentPartnerId, "", new { @class = "text-danger", @required = "required" })
             </div>
 
         </div>
-
 
         <div class="form-group">
             @Html.LabelFor(model => model.PartnerContactsId, "Select Contact / Doctor", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -105,7 +100,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ParentIdOnPartnersSystem, "Your ID on Their System" , htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ParentIdOnPartnersSystem, "Your ID on Their System", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.ParentIdOnPartnersSystem, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.ParentIdOnPartnersSystem, "", new { @class = "text-danger" })
@@ -113,13 +108,12 @@
 
         </div>
 
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Save Details" class="btn btn-primary btn-block" />
             </div>
         </div>
-
     </div>
+
 
 }

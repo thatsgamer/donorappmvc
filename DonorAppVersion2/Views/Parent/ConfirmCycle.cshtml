@@ -1,0 +1,222 @@
+﻿@model DonorAppVersion2.Models.ConfirmDonorCycleViewModel
+
+@{
+    ViewBag.Title = "Confirm Donor Cycle";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(
+         $(function () {
+             var ddlPartnerss = $("#ddl_type");
+             ddlPartnerss.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+             $.ajax({
+                 type: "POST",
+                 url: "/Parent/GetAssociationTypeForConfirm",
+                 data: '{}',
+                 contentType: "application/json; charset=utf-8",
+                 dataType: "json",
+                 success: function (response) {
+                     ddlPartnerss.empty().append('<option selected="selected" value="0">Please select</option>');
+                     $.each(response, function () {
+                         ddlPartnerss.append($("<option></option>").val(this['Value']).html(this['Text']));
+                     });
+                 },
+                 failure: function (response) {
+                     alert(response.responseText);
+                 },
+                 error: function (response) {
+                     alert(response.responseText);
+                 }
+             });
+
+
+             $("#ddl_type").change(function () {
+                 var ddlContacts = $("#ddl_agency");
+                 ddlContacts.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+                 $.ajax({
+                     type: "POST",
+                     url: "/Parent/GetPartnersForConfirm",
+                     data: JSON.stringify({ id: $("#ddl_type").val() }),
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+                     success: function (response2) {
+                         ddlContacts.empty().append('<option selected="selected" value="0">Please select</option>');
+                         $.each(response2, function () {
+                             ddlContacts.append($("<option></option>").val(this['Value']).html(this['Text']));
+                         });
+                     },
+                     failure: function (response2) {
+                         alert(response2.responseText);
+                     },
+                     error: function (response2) {
+                         alert(response2.responseText);
+                     }
+
+                 });
+             });
+
+
+
+             $("#ddl_agency").change(function () {
+                 var ddlContacts = $("#ddl_contactperson");
+                 ddlContacts.empty().append('<option selected="selected" value="0" disabled = "disabled">Loading.....</option>');
+                 $.ajax({
+                     type: "POST",
+                     url: "/Parent/GetPartnerContactsForConfirm",
+                     data: JSON.stringify({ id: $("#ddl_agency").val() }),
+                     contentType: "application/json; charset=utf-8",
+                     dataType: "json",
+                     success: function (response2) {
+                         ddlContacts.empty().append('<option selected="selected" value="0">Please select</option>');
+                         $.each(response2, function () {
+                             ddlContacts.append($("<option></option>").val(this['Value']).html(this['Text']));
+                             
+                         });
+                     },
+                     failure: function (response2) {
+                         alert(response2.responseText);
+                     },
+                     error: function (response2) {
+                         alert(response2.responseText);
+                     }
+
+                 });
+             });
+
+
+             $("#ddl_contactperson").change(function () {
+                 document.getElementById("btn_addtodc").disabled = false;
+             });
+         }));
+</script>
+
+<h2>
+    Confirm Donor Cycle
+</h2><hr />
+
+@{
+    var donorCycle = Model.DonorCycleEgg;
+    var agencyList = Model.ParentDonorCycleAgencies;
+}
+
+<div class="row">
+    <div class="col-md-6">
+
+        <div class="row">
+            <div class="col-md-6">
+                Donor Cycle ID (DCID) :
+            </div>
+            <div class="col-md-6">
+                <h4>@donorCycle.DonorCycleId</h4>
+            </div>
+        </div>
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6">
+                Selected Child Type :
+            </div>
+            <div class="col-md-6">
+                @donorCycle.ChildType
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6">
+                Selected Donor ID (DID) :
+            </div>
+            <div class="col-md-6">
+                @donorCycle.DonorId
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-6">
+                Donor Eye Color, Height & Age :
+            </div>
+            <div class="col-md-6">
+                @donorCycle.DonorEyeColor, @donorCycle.DonorHeight (cm) & @donorCycle.DonorAge Years
+            </div>
+        </div>
+
+        <hr />
+
+
+        <h4>
+            Associated Agencies
+        </h4>
+
+        @if (agencyList.Count() > 0)
+        {
+            <table class="table table-striped">
+                <tr>
+                    <th>Agency Name</th>
+                    <th>Contact Person </th>
+                    <th>Action </th>
+
+                </tr>
+               
+                    @foreach (var item in agencyList)
+                        
+                    {
+                    <tr>
+                        <td>@item.PartnerAndTheirContacts.Partner.Name (@item.PartnerAndTheirContacts.Partner.AssociationType)</td>
+                        <td>@item.PartnerAndTheirContacts.ContactName - @item.PartnerAndTheirContacts.ContactDesignation</td>
+                        <td><a href="#" class="label label-danger" style="text-decoration:none">Remove</a></td>
+                    </tr>
+                    }
+            </table>
+            
+            <input type="submit" value="Confirm & Add Donor Cycle" class="btn btn-success" />
+        }
+        else
+        {
+        <small>There are no agencies yet specified by you for this donor cycle.</small>
+        }
+        
+    </div>
+
+    <div class="col-md-6">
+        <div style="padding:20px; border:solid 1px #f1f1f1">
+            <h4>
+                Assign Agencies<br />
+                <small>You can specify your current Fertility Center, Sperm Bank, Clinic, Adoption Agencies, Fertility Centers and More</small>
+            </h4>
+            @using (Html.BeginForm("ConfirmCycle", "Parent", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <label class="label label-success">@ViewBag.SuccessMessage</label>
+                        <label class="label label-warning">@ViewBag.WarningMessage</label>
+                        <label class="label label-danger">@ViewBag.ErrorMessage</label>
+                    </div>
+                </div>
+                <input type="hidden" name="DonorCycleId" value="@donorCycle.DonorCycleId" />
+                <input type="hidden" name="isApprovedByPartner" value="False" />
+                <input type="hidden" name="Reason" value="" />
+
+                <text>Type of Agency</text>
+                <select id="ddl_type" name="AgencyType" class="form-control"></select><br />
+
+                <text>Select Name of Agency</text>
+                <select id="ddl_agency" name="ParentPartnerId" class="form-control"></select><br />
+
+                <text>Select Name of Contact Person</text>
+                <select id="ddl_contactperson" name="PartnerContactsId" class="form-control"></select><br />
+
+                <input id="btn_addtodc" type="submit" value="Add Agency to your Donor Cycle" class="btn btn-primary" disabled />
+                
+            }
+
+        </div>
+    </div>
+</div>

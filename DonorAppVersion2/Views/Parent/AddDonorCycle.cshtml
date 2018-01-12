@@ -1,23 +1,10 @@
-﻿@model DonorAppVersion2.Models.DonorCycle
+﻿@model DonorAppVersion2.Models.DonorCycleEgg
 @{
     ViewBag.Title = "Add Donor Cycle : Parents Portal - Donor21";
     Layout = "~/Views/Shared/_parentLayout.cshtml";
 }
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function () {
 
-        $('[name^="u_"]').change(function () {
-            if ($(this).is(":checked")) {
-                $(this).next("select").attr("disabled", false);
-            }
-            else {
-                $(this).next("select").attr("disabled", true);
-            }
-        });
-
-    });
-</script>
 @using (Html.BeginForm("AddDonorCycle", "Parent", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
@@ -43,13 +30,29 @@
     var selectList = new SelectList(
     new List<SelectListItem>
                         {
-                            new SelectListItem {Text = "Donor Egg", Value = "Donor Egg"},
-                            new SelectListItem {Text = "Donor Sperm", Value = "Donor Sperm"},
-                            new SelectListItem {Text = "Donated Embryo", Value = "Donated Embryo"},
-                            new SelectListItem {Text = "Adopted", Value = "Adopted"}
+                            new SelectListItem {Text = "Egg", Value = "Egg"},
+                            new SelectListItem {Text = "Sperm", Value = "Sperm"},
+                            new SelectListItem {Text = "Embryo", Value = "Embryo"},
+                            new SelectListItem {Text = "Adopted Child", Value = "Adopted Child"}
                         }, "Value", "Text");
                         }
-                        @Html.DropDownListFor(model => model.ChildType, selectList, "Select", new { @class = "form-control" })
+                        @Html.DropDownListFor(model => model.ChildType, selectList, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CycleType, "Cycle Type", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @{
+                            var selectcycletypeList = new SelectList(
+                            new List<SelectListItem>
+                        {
+                            
+                            new SelectListItem {Text = "Default", Value = "Default"},
+                            new SelectListItem {Text = "Fresh", Value = "Fresh"},
+                            new SelectListItem {Text = "Frozen", Value = "Frozen"}
+                        }, "Value", "Text");
+                        }
+                        @Html.DropDownListFor(model => model.CycleType, selectcycletypeList, new { @class = "form-control" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -65,13 +68,6 @@
                     <div class="col-md-8">
                         <input type="month" name="MonthAndYearOfRetrieval" class="form-control"required placeholder="mm/yyyy">
                         @Html.ValidationMessageFor(model => model.MonthAndYearOfRetrieval, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FertilityAttorny, "Fertility Attorny", htmlAttributes: new { @class = "control-label col-md-4" })
-                    <div class="col-md-8">
-                        @Html.EditorFor(model => model.FertilityAttorny, new { htmlAttributes = new { @class = "form-control", @required = "required" } })
-                        @Html.ValidationMessageFor(model => model.FertilityAttorny, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="form-group">
@@ -96,34 +92,22 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <span class="control-label col-md-4" style="font-weight:bold">Loking for Update From</span>
+                    <span class="control-label col-md-4" style="font-weight:bold">Loking for Updates From</span>
                     <div class="col-md-8">
-                        <input type='checkbox' name='u_donor'>
-                        <select id="select_donor" name="select_donor" class="form-control" disabled>
+                        <select id="select_donor" name="select_donor" class="form-control">
                             <option>Egg Donor</option>
                             <option>Sperm Donor</option>
-                        </select>
-                        <br />
-
-                        <input type='checkbox' name='u_embryo'>
-                        <select id="select_embryo" name="select_embryo" class="form-control" disabled>
-                            <option>Male Embryo</option>
-                            <option>Female Embryo</option>
-                        </select>
-                        <br />
-
-                        <input type='checkbox' name='u_genetic'>
-                        <select id="select_genetic" name="select_genetic" class="form-control" disabled>
+                            <option>Female Genetic Embryo Donor</option>
+                            <option>Male Genetic Embryo Donor</option>
+                            <option>Female Genetic Birth Parent</option>
                             <option>Male Genetic Birth Parent</option>
-                            <option>Female  Genetic Birth Parent</option>
                         </select>
-                        <br />
                     </div>
                 </div>
                 <br />
                 <div class="form-group">
                     <div class="col-md-offset-4 col-md-8">
-                        <input type="submit" value="Add Donor Cycle" class="btn btn-primary btn-block" />
+                        <input type="submit" value="Add & Confirm Donor Cycle" class="btn btn-primary btn-block" />
                     </div>
                 </div>
             </div>

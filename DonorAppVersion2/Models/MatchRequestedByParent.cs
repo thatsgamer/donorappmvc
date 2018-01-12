@@ -18,6 +18,6 @@ namespace DonorAppVersion2.Models
         public Nullable<int> ParentsPaymentId { get; set; }
         public string Note { get; set; }
 
-        public List<Parent> Parent { get; set; }
+        public virtual Parent Parent { get; set; }
     }
 }

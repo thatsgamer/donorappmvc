@@ -1,0 +1,75 @@
+﻿@model DonorAppVersion2.Models.ParentAndDonorCyclesViewModel
+@{
+    ViewBag.Title = "My Donor Cycles / Childs";
+    Layout = "~/Views/Shared/_parentLayout.cshtml";
+}
+
+<h2>My Donor Cycle Involvements</h2>
+
+@{
+    
+    var donorCycle = Model.DonorCycleEgg;
+    var donorcycleid = 0;
+
+    if (donorCycle != null)
+    {
+        donorcycleid = donorCycle.Count();
+    }
+}
+
+<table class="table table-striped">
+
+    @if (donorcycleid > 0)
+    {
+        <tr>
+
+            <th>Donor Id</th>
+            <th>Child Type</th>
+            <th>Month and Year of Retrival</th>
+            <th>Donors Eye Color</th>
+            <th>Donors Height</th>
+            <th>Donors Age</th>
+            <th>Action</th>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <td>
+                <text> You dont have any active donor cycles added yet </text>
+            </td>
+        </tr>
+    }
+
+    @foreach (DonorAppVersion2.Models.DonorCycleEgg cycle in donorCycle)
+    {
+        <tr>
+            <td>@cycle.DonorId</td>
+            <td>@cycle.ChildType</td>
+            <td>@cycle.MonthAndYearOfRetrieval</td>
+            <td>@cycle.DonorEyeColor</td>
+            <td>@cycle.DonorHeight</td>
+            <td>@cycle.DonorAge</td>
+            <td>
+                @{
+        if (cycle.isApprovedByDonor == true)
+        {
+            <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
+        }
+        else
+        {
+            <a href="~/Parent/ViewDonorCycle/@cycle.DonorCycleId" class="label label-primary" style="text-decoration:none">View Update</a>
+                    <a href="~/Parent/RemoveDonorCycle/@cycle.DonorCycleId" class="label label-danger" style="text-decoration:none">Remove</a>
+        }
+                }
+
+
+            </td>
+
+
+
+        </tr>
+    }
+
+
+</table>
