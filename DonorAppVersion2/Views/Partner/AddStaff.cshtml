@@ -1,0 +1,74 @@
+﻿@model DonorAppVersion2.Models.PartnerAndTheirContacts
+
+@{
+    ViewBag.Title = "AddStaff";
+    Layout = "~/Views/Shared/_partnerLayout.cshtml";
+}
+
+<h2>Add Staff</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Fill up the form to add Staff Member</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PartnerContactsId)
+        @Html.HiddenFor(model=> model.PartnerId)
+        @Html.HiddenFor(model => model.CreatedDate)
+
+        <div class="col-md-12">
+            <label class="label label-success">@ViewBag.SuccessMessage</label>
+            <label class="label label-warning">@ViewBag.WarningMessage</label>
+            <label class="label label-danger">@ViewBag.ErrorMessage</label>
+        </div>
+        <br />
+                <div class="form-group">
+            @Html.LabelFor(model => model.ContactDesignation, "Select Designation", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="ContactDesignation" class="form-control">
+                    <option>Receptionist</option>
+                    <option>Doctor</option>
+                    <option>Fertility Attorny</option>                    
+                </select>                
+                @Html.ValidationMessageFor(model => model.ContactDesignation, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContactName, "Full Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ContactName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContactName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContactEmail, "Email", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ContactEmail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContactEmail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ContactPhone, "Contact Number", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ContactPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ContactPhone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save Staff Member" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("View All Staff Members", "ViewStaff")
+</div>

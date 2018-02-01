@@ -38,5 +38,13 @@ namespace DonorAppVersion2.Models
         public virtual DbSet<Partner> Partners { get; set; }
 
         public virtual DbSet<PartnerAndTheirContacts> PartnerAndTheirContacts { get; set; }
+
+        public virtual DbSet<PotentialMatches> PotentialMatches { get; set; }
+
+        public virtual DbSet<MedicalQuestions> MedicalQuestions { get; set; }
+
+        public virtual DbSet<MedicalReportUpdate> MedicalReportUpdate { get; set; }
+
+        public virtual DbSet<MedicalReportsQuestions> MedicalReportsQuestions { get; set; }
     }
 }

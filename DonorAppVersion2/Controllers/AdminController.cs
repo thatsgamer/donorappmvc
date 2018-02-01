@@ -96,13 +96,73 @@ namespace DonorAppVersion2.Controllers
 
 
 
+        public ActionResult MedicalQuestions()
+        {
+            if (Session["AdminId"] != null)
+            {
+                using(sampleEntities dbModel = new sampleEntities())
+                {
+                    var listMedicalQuestions = dbModel.MedicalQuestions.ToList();
+                    return View(listMedicalQuestions);
+                }
+                
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
 
+        public ActionResult AddNewMedicalQuestion()
+        {
+            if (Session["AdminId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
 
+        [HttpPost]
+        public ActionResult AddNewMedicalQuestion(MedicalQuestions mq)
+        {
+            if (Session["AdminId"] != null)
+            {
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    dbModel.MedicalQuestions.Add(mq);
+                    dbModel.SaveChanges();
+                    ViewBag.SuccessMessage = "Question Saved!";
+                    ModelState.Clear();
+                    return View();
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
 
+        public ActionResult RemoveMedicalQuestion(int id)
+        {
+            if (Session["AdminId"] != null)
+            {
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var getMedicalQuestion = dbModel.MedicalQuestions.Where(x => x.MQID == id).FirstOrDefault();
+                    dbModel.MedicalQuestions.Remove(getMedicalQuestion);
+                    dbModel.SaveChanges();
 
-
-
-
+                    return RedirectToAction("MedicalQuestions");
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
 
 
         ////////////////////////////////////////////////////////////////////////////////// Session Timeout

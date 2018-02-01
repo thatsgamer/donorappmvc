@@ -143,7 +143,16 @@ namespace DonorAppVersion2.Controllers
 
 
                             var settings = dbModel.AdminSettings.FirstOrDefault();
-                            var regfeeamount = settings.ParentRegistrationCharges;
+                            var regfeeamount = 10;
+                            if (settings.ParentRegistrationCharges != null)
+                            {
+                                regfeeamount = settings.ParentRegistrationCharges;
+                            }
+                            else
+                            {
+                                regfeeamount = 10;
+                            }
+
 
                             //Add First Payment Transaction
                             ParentPayments pp = new ParentPayments();
@@ -433,7 +442,7 @@ namespace DonorAppVersion2.Controllers
                                 //ViewBag.SuccessMessage= "Donor Cycle Added Successfully!";
                                 //return View();
 
-                                return RedirectToAction("ConfirmCycle", new { id = donorCycle.DonorId });
+                                return RedirectToAction("ConfirmCycle", new { id = donorCycle.DonorCycleId });
                             }
                         }
                         catch (Exception ex)

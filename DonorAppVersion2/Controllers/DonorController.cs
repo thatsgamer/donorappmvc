@@ -616,7 +616,7 @@ namespace DonorAppVersion2.Controllers
             }
         }       
         [HttpPost]
-        public ActionResult SubmitNewUpdate(DonorCycleUpdate dcu)
+        public ActionResult SubmitNewUpdate(MedicalReportUpdate dcu)
         {
             if (Session["DonorId"] != null)
             {
@@ -625,16 +625,14 @@ namespace DonorAppVersion2.Controllers
                     try
                     {
                         ViewBag.donorCycleId = dcu.DonorCycleId;
-                        dcu.UpdateDate = System.DateTime.Today;
-                        dcu.CompletionDate = null;
-                        dcu.isCompleted = false;
-                        dcu.isSubmitted = false;
-
-                        dbModel.DonorCycleUpdates.Add(dcu);
+                        dcu.DateOfSubmission = System.DateTime.Today;                        
+                        dcu.Status = "Pending";
+                        dbModel.MedicalReportUpdate.Add(dcu);
                         dbModel.SaveChanges();
 
-                        ViewBag.SuccessMessage = "Record Updated";                        
-                        return View(dcu);
+                        //ViewBag.SuccessMessage = "Record Updated";                        
+                        //return View(dcu);
+                        return RedirectToAction("MedicalUpdateStepTwo", new { @id = dcu.MedicalReportId });
 
                     }
                     catch(Exception ex)
@@ -649,6 +647,57 @@ namespace DonorAppVersion2.Controllers
                 return RedirectToAction("SessionTimeout");
             }
         }
+
+        public ActionResult MedicalUpdateStepTwo(int id)
+        {
+            if(Session["DonorId"]!= null)
+            {
+                using (sampleEntities dbModel = new sampleEntities())
+                {
+                    var report = dbModel.MedicalReportUpdate.Where(x => x.MedicalReportId == id).FirstOrDefault();
+                    var listquestion = dbModel.MedicalReportsQuestions.Include("MedicalQuestions").Where(x => x.MedicalReportId == report.MedicalReportId).ToList();
+                    var questions = dbModel.MedicalQuestions.ToList();
+
+                    var viewModel = new MedicalUpdateStepTwoViewModel()
+                    {
+                        MedicalReportUpdate = report,
+                        MedicalReportsQuestions = listquestion,
+                        MedicalQuestions = questions
+                    };
+
+                    
+                    return View(viewModel);
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveAnswer(MedicalReportsQuestions mrq)
+        {
+            if (Session["DonorId"] != null)
+            {
+                using(sampleEntities dbModel = new sampleEntities())
+                {
+                    dbModel.MedicalReportsQuestions.Add(mrq);
+                    dbModel.SaveChanges();
+
+                    return RedirectToAction("MedicalUpdateStepTwo", new { id = mrq.MedicalReportId });
+                    //return View(mrq.MedicalReportId);
+                }
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+
+
+
+
         public ActionResult RemoveUpdate(int id)
         {
             if(Session["DonorId"]!=null)
@@ -695,6 +744,19 @@ namespace DonorAppVersion2.Controllers
             }
         }
 
-        ///////////////////////////////////////////////////////////////////////////////////////////// My Donor Cycle
+        ///////////////////////////////////////////////////////////////////////////////////////////// My Match Request
+
+        public ActionResult MatchDetails()
+        {
+            if (Session["DonorId"] != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("SessionTimeout");
+            }
+        }
+             
     }
 }

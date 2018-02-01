@@ -70,5 +70,7 @@ namespace DonorAppVersion2.Models
         public bool Status { get; set; }
 
         public string Note { get; set; }
+
+
     }
 }

@@ -1,0 +1,62 @@
+﻿@model DonorAppVersion2.Models.MedicalQuestions
+
+@{
+    ViewBag.Title = "Add New Medical Question";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>Add New Medical Question</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>MedicalQuestions</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.MQID)
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-12">
+                <label class="label label-success">@ViewBag.SuccessMessage</label>
+                <label class="label label-warning">@ViewBag.WarningMessage</label>
+                <label class="label label-danger">@ViewBag.ErrorMessage</label>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.QuestionType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="QuestionType" class="form-control">
+                    <option>Health Related Questions</option>
+                    <option>Desease Related Questions</option>
+                    <option>Family Related Questions</option>
+                    <option>Other Questions Questions</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.QuestionType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Question, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Question, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Question, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PossibleAnswers, "Possible Answers", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PossibleAnswers, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PossibleAnswers, "", new { @class = "text-danger" })<br />
+                <span style="font-size:xx-small; color:orange">Seprate Multiple Answers by comma, leave blank if the answer should be descriptive</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save This Question and Answers" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}

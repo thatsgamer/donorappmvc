@@ -1,0 +1,35 @@
+﻿@model DonorAppVersion2.Models.ParentDonorCycleAgencies
+
+@{
+    ViewBag.Title = "RejectDonorCycle";
+    Layout = "~/Views/Shared/_partnerLayout.cshtml";
+}
+
+<h2>Reject Donor Cycle</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Please specify reason to Reject</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.PDCAID)
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Reason, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Reason, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Reason, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save reason and Reject" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+

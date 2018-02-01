@@ -206,6 +206,10 @@
     <Compile Include="Models\DonorLoginViewModel.cs" />
     <Compile Include="Models\DonorVerificationViewModel.cs" />
     <Compile Include="Models\MatchRequestedByParent.cs" />
+    <Compile Include="Models\MedicalQuestions.cs" />
+    <Compile Include="Models\MedicalReportsQuestions.cs" />
+    <Compile Include="Models\MedicalReportUpdate.cs" />
+    <Compile Include="Models\MedicalUpdateStepTwoViewModel.cs" />
     <Compile Include="Models\ParentDonorCycleAgencies.cs" />
     <Compile Include="Models\ParentPayments.cs" />
     <Compile Include="Models\Parent.cs" />
@@ -215,7 +219,9 @@
     <Compile Include="Models\ParentsRegisteredWithPartner.cs" />
     <Compile Include="Models\Partner.cs" />
     <Compile Include="Models\PartnerAndTheirContacts.cs" />
+    <Compile Include="Models\PartnerDashboardViewModel.cs" />
     <Compile Include="Models\PayPalModel.cs" />
+    <Compile Include="Models\PotentialMatches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +270,16 @@
     <Content Include="Views\Admin\ViewAllAgencies.cshtml" />
     <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\Admin\ParentList.cshtml" />
+    <Content Include="Views\Partner\SessionTimeout.cshtml" />
+    <Content Include="Views\Partner\Dashboard.cshtml" />
+    <Content Include="Views\Admin\MedicalQuestions.cshtml" />
+    <Content Include="Views\Partner\ViewStaff.cshtml" />
+    <Content Include="Views\Partner\AddStaff.cshtml" />
+    <Content Include="Views\Partner\RejectDonorCycle.cshtml" />
+    <Content Include="Views\Partner\MakeNewMatch.cshtml" />
+    <Content Include="Views\Partner\PotentialMatchDetails.cshtml" />
+    <Content Include="Views\Admin\AddNewMedicalQuestion.cshtml" />
+    <Content Include="Views\Donor\MedicalUpdateStepTwo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

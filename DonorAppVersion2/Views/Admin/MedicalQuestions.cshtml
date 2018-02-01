@@ -1,0 +1,40 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.MedicalQuestions>
+@{
+    ViewBag.Title = "Medical Questions";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<h2>Medical Questions for Donor Update</h2>
+<hr />
+<a href="~/Admin/AddNewMedicalQuestion" class="btn btn-success">Add New Question</a>
+<br /> <br /> 
+<table class="table table-striped">
+    @if (Model.Count() > 0)
+    {
+        <tr>
+            <th>Question Type</th>
+            <th>Question</th>
+            <th>Possible Answers</th>
+            <th>Action</th>
+        </tr>
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.QuestionType</td>
+                <td>@item.Question</td>
+                <td>@item.PossibleAnswers</td>
+                <td><a href="~/Admin/RemoveMedicalQuestion/@item.MQID" class="label label-danger">Remove Question</a></td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td>No Questions Added yet!</td></tr>
+    }
+</table>
+
+
+
+
+
+

@@ -54,28 +54,30 @@
                 <label class="label label-danger">@ViewBag.ErrorMessage</label>
             </div>
         </div>
-        <table class="table table-striped" style="font-size:xx-small;">
+        <table class="table table-striped" style="font-size:x-small;">
 
             @if (donorcycleid > 0)
             {
                 <tr>
+                    <th>Donor Cycle Id</th>
                     <th>Parent Id</th>
                     <th>Child Type</th>
                     <th>Retrival on</th>
-                    <th>Donors Eye Color</th>
-                    <th>Donors Height</th>
-                    <th>Donors Age</th>
+                    <th>Donors Details</th>
                     <th>Action</th>
                 </tr>
                 foreach (DonorAppVersion2.Models.DonorCycleEgg cycle in donorCycle)
                 {
                     <tr>
+                        <td>@cycle.DonorCycleId</td>
                         <td>@cycle.ParentId</td>
                         <td>@cycle.ChildType</td>
                         <td>@cycle.MonthAndYearOfRetrieval</td>
-                        <td>@cycle.DonorEyeColor</td>
-                        <td>@cycle.DonorHeight</td>
-                        <td>@cycle.DonorAge</td>
+                        <td>
+                            Eye Color :  @cycle.DonorEyeColor<br />
+                            Height : @cycle.DonorHeight cm<br />
+                            Age : @cycle.DonorAge
+                        </td>
                         <td>
                             @{
                                 if (cycle.isApprovedByDonor == false)
