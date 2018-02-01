@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.PotentialMatches>
+
+@{
+    ViewBag.Title = "Potential Match Details";
+    Layout = "~/Views/Shared/_partnerLayout.cshtml";
+}
+
+<h2>Lists of Potential Matches</h2>
+<hr /><a href="~/Partner/MakeNewMatch" class="btn btn-primary">Submit New Match</a>
+<table class="table table-striped">
+
+    @if (Model.Count() > 0)
+    {
+        <tr>
+            <th>Parent Details</th>
+            <th>Donor Details</th>
+            <th>Match Status</th>
+        </tr>
+
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.ParentName<br />
+                    Contact : @item.ParentContactNumber<br />
+                    Email : @item.ParentEmail
+                </td>
+                <td>
+                    @item.DonorName<br />
+                    Contact : @item.DonorContactNumber<br />
+                    Email : @item.DonorEmail
+                </td>
+                <td>
+                    @item.MatchStatus
+                </td>
+
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td>No Matches Submitted Yet</td></tr>
+    }
+</table>
+

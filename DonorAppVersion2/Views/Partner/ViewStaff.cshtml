@@ -1,0 +1,47 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.PartnerAndTheirContacts>
+
+@{
+    ViewBag.Title = "View Staff";
+    Layout = "~/Views/Shared/_partnerLayout.cshtml";
+}
+
+<h2>View Staff</h2>
+<a href="~/Partner/AddStaff" class="btn btn-primary">Add New Staff Member</a>
+<hr />
+@{
+    <table class="table table-striped">
+
+
+        @if (Model.Count() > 0)
+        {
+            <tr>
+                <td>Id</td>
+                <td>Designation</td>
+                <td>Name</td>
+                <td>Email</td>
+                <td>Contact</td>
+                <td>Added On</td>
+            </tr>
+
+
+            
+               foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.PartnerContactsId</td>
+                        <td>@item.ContactDesignation</td>
+                        <td>@item.ContactName</td>
+                        <td>@item.ContactEmail</td>
+                        <td>@item.ContactPhone</td>
+                        <td>@item.CreatedDate.ToString("dd/MMMM/yyyy")</td>
+                    </tr>
+                }
+
+        }
+        else
+        {
+            <tr><td>No Staff Members Added Yet!</td></tr>
+        }
+
+    </table>
+}

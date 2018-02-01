@@ -1,0 +1,87 @@
+﻿@model DonorAppVersion2.Models.MedicalUpdateStepTwoViewModel
+@{
+    ViewBag.Title = "Medical Update Step Two";
+    Layout = "~/Views/Shared/_donorLayout.cshtml";
+}
+
+@{
+    var update = Model.MedicalReportUpdate;
+    var questions = Model.MedicalQuestions;
+    var listanswers = Model.MedicalReportsQuestions;
+}
+
+<h2>Medical Update Step Two : Answer Medical Questions Below</h2>
+<hr />
+
+<div class="row">
+    <div class="col-md-6">
+
+        @if (questions.Count() > 0)
+        {
+            <h4>Medical Update ID : @update.MedicalReportId</h4><br />
+            foreach (var qst in questions)
+            {
+                <form name="formQuestions" action="~/Donor/SaveAnswer" method="post">
+
+                    <input type="hidden" name="MedicalReportId" value="@update.MedicalReportId" />
+                    <input type="hidden" name="MQID" value="@qst.MQID" />
+                    <span style="font-size:medium">@qst.QuestionType</span><br />
+                    <span>@qst.Question</span><br />
+
+                    @if (qst.PossibleAnswers != "")
+                    {
+                        string[] answers = qst.PossibleAnswers.Split(',');
+
+                        foreach (var ans in answers)
+                        {
+                            <input type="checkbox" name="SelectedAnswer" />@ans <span>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        }
+                    }
+                    <br />
+                    <text>Or Describe Below</text>
+
+                    <textarea name="EnteredAnswer" class="form-control" rows="3" placeholder="Describe your answer here"></textarea>
+                    <input type="submit" value="Save Answer" class="btn btn-primary btn-sm" />
+                    <br /><br />
+                </form>
+            }
+
+            
+
+
+        }
+        else
+        {
+            <span>There are no questions to be answered!, You can proceed to submit the update</span>
+        }
+
+
+    </div>
+    <div class="col-md-6">
+        Answered Questions
+        <hr />
+        <table class="table table-striped">
+
+            @if (listanswers.Count() > 0)
+            {
+                <tr>
+                    <th>Your Asnwers</th>
+                </tr>
+                foreach (var item in listanswers)
+                {
+                    <tr>
+                        <td>
+                            <strong> @item.MedicalQuestions.Question</strong>
+                            <br />
+                            Selected Asnwer -
+                            @item.SelectedAnswers<br />
+                            Described Asnwer -
+                            @item.EnteredAnswer
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+        <a href="~/Donor/MyDonorCycles" class="btn btn-success">Submit Medical Update and Notify Parent / Agency</a>
+    </div>
+</div>

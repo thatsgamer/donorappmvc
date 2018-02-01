@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DonorAppVersion2.Models.ParentDonorCycleAgencies>
+
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_partnerLayout.cshtml";
+}
+
+<h2>Dashboard</h2>
+
+<hr />
+<h4>Donor Cycles Pending for Your Approval</h4>
+
+<table class="table table-striped">
+    @if (Model.Count() > 0)
+    {
+        <tr>
+            <th>Donor Cycle Details</th>
+            <th>Staff Details</th>
+            <th>Actions</th>
+        </tr>
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <text>Donor Cycle ID: </text>@item.DonorCycleId<br />
+                    <text>Child Type: </text>@item.DonorCycleEgg.ChildType<br />
+                    <text>Donor: </text>@item.DonorCycleEgg.Donor.FirstName @item.DonorCycleEgg.Donor.LastName (DID : @item.DonorCycleEgg.DonorId)<br />
+                    <text>Cycle Type: </text>@item.DonorCycleEgg.CycleType<br />
+                    @if (@item.DonorCycleEgg.MonthAndYearOfRetrieval != "")
+                    {
+                        <text>Month/Year of Retrieval: </text>@item.DonorCycleEgg.MonthAndYearOfRetrieval<br />
+                    }
+                    <text>Donor Approved: </text>@item.DonorCycleEgg.isApprovedByDonor<br />
+                </td>
+                <td>
+                    <text>Staff Associated : </text>@item.PartnerAndTheirContacts.ContactName (@item.PartnerAndTheirContacts.ContactDesignation)<br />
+                    <text>Email : </text>@item.PartnerAndTheirContacts.ContactEmail<br />
+                    <text>Phone : </text>@item.PartnerAndTheirContacts.ContactPhone<br />
+                </td>
+                <td>
+                    @if (item.isApprovedByPartner == false)
+                    {
+                        if (item.Reason != "" || item.Reason != null)
+                        {
+                            <span>
+                                Donor Cycle is Marked as Rejected<br />
+                                Reason : @item.Reason
+                            </span>
+                        }
+                        <br /><br />
+                        <a href="~/Partner/ApproveDonorCycle/@item.PDCAID" class="btn btn-sm btn-success">Confirm and Approve</a>
+                        <a href="~/Partner/RejectDonorCycle/@item.PDCAID" class="btn btn-sm btn-danger">Reject and Reason</a>
+                    }
+                    else
+                    {
+                        <span style="color:green; font-size:medium">This cycle is already approved by you!</span><br /><br />
+                        <a href="~/Partner/RejectDonorCycle/@item.PDCAID" class="btn btn-sm btn-danger">Reject And Reason</a>
+                    }
+                </td>
+
+
+
+            </tr>
+        }
+    }
+    else
+    {
+        <tr><td>There are no Donor Cycles Pending for Your Approval</td></tr>
+    }
+</table>
