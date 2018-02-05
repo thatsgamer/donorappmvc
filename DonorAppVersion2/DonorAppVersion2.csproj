@@ -280,6 +280,7 @@
     <Content Include="Views\Partner\PotentialMatchDetails.cshtml" />
     <Content Include="Views\Admin\AddNewMedicalQuestion.cshtml" />
     <Content Include="Views\Donor\MedicalUpdateStepTwo.cshtml" />
+    <Content Include="Views\Parent\ViewMedicalUpdate.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
